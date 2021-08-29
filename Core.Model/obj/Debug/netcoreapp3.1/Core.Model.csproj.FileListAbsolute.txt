@@ -1,0 +1,12 @@
+E:\WebProjects\AlmoBackend\Core.Model\bin\Debug\netcoreapp3.1\Core.Model.deps.json
+E:\WebProjects\AlmoBackend\Core.Model\bin\Debug\netcoreapp3.1\Core.Model.dll
+E:\WebProjects\AlmoBackend\Core.Model\bin\Debug\netcoreapp3.1\Core.Model.pdb
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.csprojAssemblyReference.cache
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.AssemblyInfoInputs.cache
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.AssemblyInfo.cs
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.csproj.CoreCompileInputs.cache
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.dll
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.pdb
+E:\WebProjects\AlmoBackend\Core.Model\bin\Debug\netcoreapp3.1\Core.Model.runtimeconfig.json
+E:\WebProjects\AlmoBackend\Core.Model\bin\Debug\netcoreapp3.1\Core.Model.runtimeconfig.dev.json
+E:\WebProjects\AlmoBackend\Core.Model\obj\Debug\netcoreapp3.1\Core.Model.genruntimeconfig.cache

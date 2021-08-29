@@ -1,0 +1,59 @@
+﻿
+@model IPagedList<Core.Model.SubscribeRequest>
+@{
+    int indexer = (int)ViewBag.index;
+}
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>اسم العميل </th>
+                    <th>البريد الإلكتروني</th>
+                    <th>مده الطلب</th>
+                    <th> تكلفة الطلب</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.UserCreated.Name
+                    </td>
+                    <td>@item.UserCreated.Email</td>
+                    <td>@item.Period
+                    </td>
+                    <td>@item.Cost</td>
+                    <td>
+                        <div class="td-actions">
+
+                            <a class="trash_link" href="#" id="btnRequestDelete_@item.SubscribeRequestId" onclick="ConfirmDeleteRequest(@item.SubscribeRequestId)" data-url="@Url.Action("DeleteRequest")"><i class="icon-trash"></i></a>
+                            <a class="edit_link" href="@Url.Action("AddEdit","Requests",new { Id=item.SubscribeRequestId})"><i class="icon-edit"></i></a>
+                            <a href="#" title="@((item.IsActive??false)?"تعطيل":"تفعيل")" class="@((item.IsActive??false)?"actine_btn":"disable_btn")" id="btnRequestStatus_@item.SubscribeRequestId" onclick="ConfirmChangeStatusRequest(@item.SubscribeRequestId)" data-url="@Url.Action("ChangeStatus")">
+                                <i class="@((item.IsActive??false)?"icon-unlock":"icon-lock")"></i>
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+                }
+
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("ListRequests", new { page }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+    {
+        ActiveLiElementClass = "page-item active",
+        PageClasses = new[] { "page-link" },
+        UlElementClasses = new[] { "pagination justify-content-center primary" },
+        LiElementClasses = new[] { "page-item" }
+
+    },
+    new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "divListRequests" }))

@@ -1,0 +1,78 @@
+﻿
+@model SubscribeRequest
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">تعديل بيانات المستخدم</li>
+
+    </ol>
+</div>
+<!-- Page header end -->
+<!-- Content wrapper start -->
+<div class="content-wrapper">
+    <div class="row justify-content-center gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <form action="AddEdit" method="post" id="frmAddUser" enctype="multipart/form-data">
+
+                <div class="card m-0">
+                    <div class="card-header">
+                        <div class="card-title"><i class="icon-grid"></i> بيانات الاشتراك </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">أسم المشترك </label>
+                                    <input type="text" class="form-control" asp-for="UserCreated.Name" placeholder=" ">
+
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">البريد الخاص بالمشترك </label>
+                                    <input type="text" class="form-control" asp-for="UserCreated.Email" placeholder=" ">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name"> مدة الاشتراك </label>
+                                    <input type="text" class="form-control" asp-for="Period" placeholder=" ">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name"> تكلفة الاشتراك </label>
+                                    <input type="text" class="form-control" asp-for="Cost" placeholder=" ">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name"> تاريخ بداية الاشتراك </label>
+                                    <input type="text" class="form-control" asp-for="FromDate" placeholder=" ">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name"> تاريخ نهاية الاشتراك </label>
+                                    <input type="text" class="form-control" asp-for="ToDate" placeholder=" ">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <a href="@Url.Action("Index","Requests")" class="btn btn-primary2 float-right"  ><i class="icon-save"></i> عودة</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Content wrapper end -->
+

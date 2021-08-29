@@ -1,0 +1,66 @@
+﻿
+@model User
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">تعديل بيانات المستخدم</li>
+
+    </ol>
+</div>
+<!-- Page header end -->
+<!-- Content wrapper start -->
+<div class="content-wrapper">
+    <div class="row justify-content-center gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <form action="AddEdit" method="post" id="frmAddUser" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.UserId)
+                @Html.HiddenFor(x => x.IsDeleted)
+                @Html.HiddenFor(x => x.IsActive)
+                @Html.HiddenFor(x => x.UserTypeId)
+                <div class="card m-0">
+                    <div class="card-header">
+                        <div class="card-title"><i class="icon-grid"></i> إدخال بيانات</div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">الإسم </label>
+                                    <input type="text" class="form-control" asp-for="Name" placeholder=" ">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">البريد </label>
+                                    <input type="text" class="form-control" asp-for="Email" placeholder=" ">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">الرقم السرى </label>
+                                    <input type="text" class="form-control" asp-for="Password" placeholder=" ">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <button type="button" class="btn btn-primary2 float-right" id="btnSaveUser"><i class="icon-save"></i> حفظ</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Content wrapper end -->
+
+@section Scripts{
+
+    <script src="~/js/Views/User.js" asp-append-version="true"></script>
+}
