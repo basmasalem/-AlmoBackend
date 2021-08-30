@@ -14,9 +14,11 @@ namespace Core.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
-        public AccountController(IUserService userService)
+        private readonly ISubscribeRequestService _subscribeRequestService;
+        public AccountController(IUserService userService, ISubscribeRequestService subscribeRequestService)
         {
             _userService = userService;
+            _subscribeRequestService = subscribeRequestService;
 
         }
         [HttpPost("LogIn")]
@@ -28,6 +30,8 @@ namespace Core.Api.Controllers
 
                 if (user == null)
                     return NotFound();
+                else if (user != null && user.IsEmailVerified != true)
+                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى" });
                 else if (user.IsActive!=true) 
                     return Ok(new { message = "هذا المستخدم مسجل من قبل ولكن عير مفعل" }); 
                 else
@@ -39,7 +43,9 @@ namespace Core.Api.Controllers
                         Password = user.Password,
                         Name = user.Name,
                         Token = GenerateToken(user.Email, user.Password),
-                         Message = "تم تسجيل الدخول بنجاح"
+                        Message = "تم تسجيل الدخول بنجاح",
+                        IsEmailVerified=user.IsEmailVerified??false,
+                        CurrentSubscribtion=_subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
 
                     }); ;
                 }
@@ -57,6 +63,8 @@ namespace Core.Api.Controllers
             var user = _userService.ValidateUser(registerVM.Email, registerVM.Password);
             try
             {
+                if (user != null && user.IsEmailVerified != true)
+                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى" });
                 if (user !=null && user.IsActive != true)
                     return Ok(new{ message= "هذا المستخدم مسجل من قبل ولكن عير مفعل" });
                else if (user != null)
@@ -64,7 +72,7 @@ namespace Core.Api.Controllers
                
                 else
                 {
-                    user = _userService.AddUser(new Model.User() { IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });
+                    user = _userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });
                     return Ok(new TokenVM()
                     {
                         UserId = user.UserId,
@@ -72,9 +80,40 @@ namespace Core.Api.Controllers
                         Password = user.Password,
                         Name = user.Name,
                         Token = GenerateToken(user.Email, user.Password),
-                        Message="تم التسجل بنجاح"
+                        IsEmailVerified = user.IsEmailVerified ?? false,
+                        Message ="تم التسجل بنجاح برجاء تفعيل الحساب"
 
                     }); ;
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+
+        }
+        [HttpPost("AccountActivation")]
+        public IActionResult AccountActivation(int userId)
+        {
+            var user = _userService.GetUserDate(userId);
+            try
+            {
+                if (user != null && user.IsEmailVerified != true)
+                {
+                    user.IsEmailVerified = true;
+                    _userService.UpdateUser(user);
+                    return Ok(new
+                    {
+                       
+                        Code = 1,
+                        Message = "تم التفعيل بنجاح"
+
+                    });
+                }
+                else
+                {
+                    return NotFound();
                 }
             }
             catch (Exception e)

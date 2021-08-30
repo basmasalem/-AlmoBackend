@@ -1,4 +1,5 @@
-﻿using Core.Model;
+﻿using Core.Api.ViewModels;
+using Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Core.Service
         public List<SubscribeRequest> GetAllSubscribeRequests();
         public List<SubscribeRequest> SearchInSubscribeRequests(string Name,string Email);
         public SubscribeRequest GetSubscribeRequestDate(int Id);
+        public SubscribeRequestVM LastUserSubscribeRequestDate(int UserId);
         public void DeleteSubscribeRequest(SubscribeRequest Model);
         public void UpdateSubscribeRequest(SubscribeRequest Model);
         public SubscribeRequest AddSubscribeRequest(SubscribeRequest Model);
@@ -43,6 +45,20 @@ namespace Core.Service
         public SubscribeRequest GetSubscribeRequestDate(int Id)
         {
             return _SubscribeRequestRepository.Find(Id);
+        }
+
+        public SubscribeRequestVM LastUserSubscribeRequestDate(int UserId)
+        {
+            return _SubscribeRequestRepository.List().Where(u => u.UserId == UserId && u.IsDeleted!=true).ToList().Select(n=>new SubscribeRequestVM() { 
+               SubscribeRequestId=n.SubscribeRequestId,
+                Cost=n.Cost??0,
+                DateCreated=n.DateCreated,
+                FromDate=n.FromDate,
+                ToDate=n.ToDate,
+                Period=n.Period,
+                IsActive=n.IsActive
+ 
+            }).LastOrDefault();
         }
 
         public List<SubscribeRequest> SearchInSubscribeRequests(string Name, string Email)
