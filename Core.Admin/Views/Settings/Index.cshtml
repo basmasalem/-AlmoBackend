@@ -1,0 +1,70 @@
+﻿
+
+@model Settings
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">الإعدادت</li>
+
+    </ol>
+</div>
+<!-- Page header end -->
+<!-- Content wrapper start -->
+<div class="content-wrapper">
+    <div class="row justify-content-center gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <form action="Settings/AddEdit" method="post" id="frmAddSettings" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.SettingsId)
+
+                <div class="card m-0">
+       
+                    <div class="card-body">
+
+
+                        <div class="row gutters">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card m-0">
+                                    <div class="card-header">
+                                        <div class="card-title display_item"><i class="icon-grid"></i>سياسة الخصوصية </div>
+
+                                    </div>
+                                    <div class="card-body">
+
+                                        <textarea class="summernote" asp-for="PrivacyPolcy"></textarea>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card m-0">
+                                    <div class="card-header">
+                                        <div class="card-title display_item"><i class="icon-grid"></i> الشروط والاحكام </div>
+
+                                    </div>
+                                    <div class="card-body">
+
+                                        <textarea class="summernote" asp-for="TermsAndConditions"></textarea>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                         
+
+                        <button type="button" class="btn btn-primary2 float-right" id="btnSaveSettings"><i class="icon-save"></i> حفظ</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Content wrapper end -->
+
+@section Scripts{
+  
+    <script src="~/js/Views/Settings.js" asp-append-version="true"></script>
+}

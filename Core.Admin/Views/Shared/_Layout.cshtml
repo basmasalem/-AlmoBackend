@@ -25,7 +25,7 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
-
+    <link rel="stylesheet" href="summernote/summernote-bs4.css"   asp-append-version="true"/>
 
 
 
@@ -112,12 +112,16 @@
     <script src="~/js/jquery.min.js" asp-append-version="true"></script>
     <script src="~/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/moment.js" asp-append-version="true"></script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Main Js Required -->
     <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/summernote/summernote-bs4.js" asp-append-version="true"></script>
     <partial name="_Validation" />
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+
     <script src="~/js/Views/Layout.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 
 </body>

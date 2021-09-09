@@ -12,7 +12,7 @@ namespace Core.Model
 
         }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Settings> Settings { get; set; }
         public DbSet<SubscribeRequest> SubscribeRequests { get; set; }
     }
 }

@@ -19,6 +19,24 @@ namespace Core.Model.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Core.Model.Settings", b =>
+                {
+                    b.Property<int>("SettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PrivacyPolcy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TermsAndConditions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SettingsId");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("Core.Model.SubscribeRequest", b =>
                 {
                     b.Property<int>("SubscribeRequestId")
@@ -73,10 +91,16 @@ namespace Core.Model.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsEmailVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserTypeId")
@@ -90,12 +114,17 @@ namespace Core.Model.Migrations
             modelBuilder.Entity("Core.Model.SubscribeRequest", b =>
                 {
                     b.HasOne("Core.Model.User", "UserCreated")
-                        .WithMany()
+                        .WithMany("SubscribeRequests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserCreated");
+                });
+
+            modelBuilder.Entity("Core.Model.User", b =>
+                {
+                    b.Navigation("SubscribeRequests");
                 });
 #pragma warning restore 612, 618
         }

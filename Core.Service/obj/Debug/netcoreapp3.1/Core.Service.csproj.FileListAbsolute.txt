@@ -10,3 +10,5 @@ E:\WebProjects\AlmoBackend\Core.Service\bin\Debug\netcoreapp3.1\Core.Model.pdb
 E:\WebProjects\AlmoBackend\Core.Service\obj\Debug\netcoreapp3.1\Core.Service.csproj.CopyComplete
 E:\WebProjects\AlmoBackend\Core.Service\obj\Debug\netcoreapp3.1\Core.Service.dll
 E:\WebProjects\AlmoBackend\Core.Service\obj\Debug\netcoreapp3.1\Core.Service.pdb
+E:\WebProjects\AlmoBackend\Core.Service\bin\Debug\netcoreapp3.1\Core.ViewModel.dll
+E:\WebProjects\AlmoBackend\Core.Service\bin\Debug\netcoreapp3.1\Core.ViewModel.pdb

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pNHDwDc3aibDejwNhhgdl7P5HMJFQnu9NQbfZnu3EbBg47H2hxlUeEYXN9Vo7XIpl6doQ8MwxrX2MfCij6/W9w==",
+  "dgSpecHash": "ehzLZSWMqrUZPiZyCFvDULFtnJ2LYN198C44Btk3www7mv8x+IjABrPBNe5NTBP1SlWiPiQDmOFfFYy1PMBRAg==",
   "success": true,
   "projectFilePath": "E:\\WebProjects\\AlmoBackend\\Core.Service\\Core.Service.csproj",
   "expectedPackageFiles": [
@@ -33,6 +33,8 @@
     "C:\\Users\\win10\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\win10\\.nuget\\packages\\newtonsoft.json\\10.0.1\\newtonsoft.json.10.0.1.nupkg.sha512",
     "C:\\Users\\win10\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
+    "C:\\Users\\win10\\.nuget\\packages\\sendgrid\\9.24.2\\sendgrid.9.24.2.nupkg.sha512",
+    "C:\\Users\\win10\\.nuget\\packages\\starkbank-ecdsa\\1.3.1\\starkbank-ecdsa.1.3.1.nupkg.sha512",
     "C:\\Users\\win10\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\win10\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
     "C:\\Users\\win10\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",

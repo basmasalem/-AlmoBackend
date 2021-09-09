@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>E:\Web Publish\AlmoApiPublish</_PublishTargetUrl>
+    <History>True|2021-09-05T14:42:30.1964026Z;True|2021-09-05T16:34:05.1222580+02:00;True|2021-09-05T16:21:36.6649524+02:00;True|2021-08-30T16:01:16.9348664+02:00;True|2021-08-30T13:19:36.8812923+02:00;True|2021-08-29T16:24:45.4426597+02:00;</History>
+  </PropertyGroup>
+</Project>

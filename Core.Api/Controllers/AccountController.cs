@@ -1,6 +1,9 @@
 ﻿
 using Core.Api.ViewModels;
 using Core.Service;
+using Core.Service.Utilities;
+using Core.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,15 +14,19 @@ namespace Core.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
         private readonly ISubscribeRequestService _subscribeRequestService;
-        public AccountController(IUserService userService, ISubscribeRequestService subscribeRequestService)
+
+        private readonly IEmailSender _emailSender;
+
+        public AccountController( IEmailSender _emailSender,IUserService userService, ISubscribeRequestService subscribeRequestService):base(_emailSender)
         {
             _userService = userService;
             _subscribeRequestService = subscribeRequestService;
-
+            this._emailSender = _emailSender;
+     
         }
         [HttpPost("LogIn")]
         public  IActionResult LogIn(LoginVM loginVM)
@@ -58,9 +65,10 @@ namespace Core.Api.Controllers
 
         }
         [HttpPost("Register")]
-        public IActionResult Register(RegisterVM registerVM)
+        public async Task<IActionResult> RegisterAsync(RegisterVM registerVM)
         {
             var user = _userService.ValidateUser(registerVM.Email, registerVM.Password);
+            string OTP = new Random().Next(0000, 9999).ToString();
             try
             {
                 if (user != null && user.IsEmailVerified != true)
@@ -72,7 +80,14 @@ namespace Core.Api.Controllers
                
                 else
                 {
+                    
                     user = _userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });
+                var Res =   await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                    {
+                        Subject = "",
+                        UserName = user.Name,
+                        code = OTP
+                    }, ""));
                     return Ok(new TokenVM()
                     {
                         UserId = user.UserId,
@@ -81,9 +96,47 @@ namespace Core.Api.Controllers
                         Name = user.Name,
                         Token = GenerateToken(user.Email, user.Password),
                         IsEmailVerified = user.IsEmailVerified ?? false,
-                        Message ="تم التسجل بنجاح برجاء تفعيل الحساب"
+                        Message ="تم التسجل بنجاح برجاء تفعيل الحساب",
+                        OTP = OTP
 
-                    }); ;
+
+
+                }); ;
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+
+        }
+        [HttpPost("SendOTP")]
+        public async Task<IActionResult> SendOTP (int userId)
+        {
+            var user = _userService.GetUserData(userId);
+            string OTP = new Random().Next(0000, 9999).ToString();
+            try
+            {
+                if (user != null && user.IsEmailVerified != true)
+                {
+                    var Res = await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                    {
+                        Subject = "",
+                        UserName = user.Name,
+                        code = OTP
+                    }, ""));
+                    return Ok(new
+                    {
+                       
+                        OTP = OTP,
+                        Message = " تم ارسال كود التفعيل بنجاح برجاء مراجعة البريد الالكترونى"
+
+                    });
+                }
+                else
+                {
+                    return NotFound();
                 }
             }
             catch (Exception e)
@@ -96,7 +149,7 @@ namespace Core.Api.Controllers
         [HttpPost("AccountActivation")]
         public IActionResult AccountActivation(int userId)
         {
-            var user = _userService.GetUserDate(userId);
+            var user = _userService.GetUserData(userId);
             try
             {
                 if (user != null && user.IsEmailVerified != true)
@@ -105,7 +158,7 @@ namespace Core.Api.Controllers
                     _userService.UpdateUser(user);
                     return Ok(new
                     {
-                       
+
                         Code = 1,
                         Message = "تم التفعيل بنجاح"
 

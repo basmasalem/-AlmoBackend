@@ -47,4 +47,11 @@
         return true;
     }
 
+$(function () {
+ 
+    $('.summernote').summernote({
+        height: 170,
+        tabsize: 2
+    });
+});
 /*});*/

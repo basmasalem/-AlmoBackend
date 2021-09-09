@@ -65,3 +65,12 @@ E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Core.Model.pdb
 E:\WebProjects\AlmoBackend\Core.Api\obj\Debug\netcoreapp3.1\Core.Api.csproj.CopyComplete
 E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Castle.Core.dll
 E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Proxies.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Core.ViewModel.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Core.ViewModel.pdb
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Humanizer.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\SendGrid.dll
+E:\WebProjects\AlmoBackend\Core.Api\bin\Debug\netcoreapp3.1\StarkbankEcdsa.dll

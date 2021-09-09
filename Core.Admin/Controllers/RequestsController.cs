@@ -45,7 +45,7 @@ namespace Core.Admin.Controllers
         {
             SubscribeRequest model = new SubscribeRequest() { };
             if (Id.HasValue && Id != 0)
-                model = _subscribeRequestService.GetSubscribeRequestDate((int)Id);
+                model = _subscribeRequestService.GetSubscribeRequestData((int)Id);
 
             return View(model);
         }
@@ -78,14 +78,14 @@ namespace Core.Admin.Controllers
         }
         public IActionResult DeleteRequest(int id)
         {
-            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestDate(id);
+            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestData(id);
             _subscribeRequestService.DeleteSubscribeRequest(subscribeRequest);
 
             return Json("1");
         }
         public IActionResult ChangeStatus(int id)
         {
-            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestDate(id);
+            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestData(id);
             subscribeRequest.IsActive = !(subscribeRequest.IsActive ?? false);
             _subscribeRequestService.UpdateSubscribeRequest(subscribeRequest);
 

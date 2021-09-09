@@ -45,7 +45,7 @@ namespace Core.Admin.Controllers
         {
             User model = new User() { IsActive = true, UserTypeId=1 };
             if (Id.HasValue && Id != 0)
-                model = _userService.GetUserDate((int)Id);
+                model = _userService.GetUserData((int)Id);
 
             return View(model);
         }
@@ -78,14 +78,14 @@ namespace Core.Admin.Controllers
         }
         public IActionResult DeleteUser(int id)
         {
-            var user = _userService.GetUserDate(id);
+            var user = _userService.GetUserData(id);
             _userService.DeleteUser(user);
           
             return Json("1");
         }
         public IActionResult ChangeStatus(int id)
         {
-            var article = _userService.GetUserDate(id);
+            var article = _userService.GetUserData(id);
             article.IsActive = !(article.IsActive??false);
             _userService.UpdateUser(article);
            

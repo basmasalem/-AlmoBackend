@@ -9,7 +9,7 @@ namespace Core.Service
     {
         public List<User> GetAllUsers();
         public List<User> SearchInUsers(string Name,string Email);
-        public User GetUserDate(int Id);
+        public User GetUserData(int Id);
         public void DeleteUser(User Model);
         public void UpdateUser(User Model);
         public User AddUser(User Model);
@@ -40,7 +40,7 @@ namespace Core.Service
            return _userRepository.List().ToList();
         }
 
-        public User GetUserDate(int Id)
+        public User GetUserData(int Id)
         {
             return _userRepository.Find(Id);
         }

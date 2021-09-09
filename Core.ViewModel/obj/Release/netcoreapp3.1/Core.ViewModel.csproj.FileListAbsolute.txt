@@ -1,0 +1,9 @@
+E:\WebProjects\AlmoBackend\Core.ViewModel\bin\Release\netcoreapp3.1\Core.ViewModel.deps.json
+E:\WebProjects\AlmoBackend\Core.ViewModel\bin\Release\netcoreapp3.1\Core.ViewModel.dll
+E:\WebProjects\AlmoBackend\Core.ViewModel\bin\Release\netcoreapp3.1\Core.ViewModel.pdb
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.csprojAssemblyReference.cache
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.AssemblyInfoInputs.cache
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.AssemblyInfo.cs
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.csproj.CoreCompileInputs.cache
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.dll
+E:\WebProjects\AlmoBackend\Core.ViewModel\obj\Release\netcoreapp3.1\Core.ViewModel.pdb

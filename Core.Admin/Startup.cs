@@ -36,6 +36,8 @@ namespace Core.Admin
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISubscribeRequestService, SubscribeRequestService>();
+            services.AddScoped<ISettingsService, SettingsService>();
+            services.AddScoped<ISettingsRepository, SettingsRepository>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,

@@ -10,7 +10,7 @@ namespace Core.Service
     {
         public List<SubscribeRequest> GetAllSubscribeRequests();
         public List<SubscribeRequest> SearchInSubscribeRequests(string Name,string Email);
-        public SubscribeRequest GetSubscribeRequestDate(int Id);
+        public SubscribeRequest GetSubscribeRequestData(int Id);
         public SubscribeRequestVM LastUserSubscribeRequestDate(int UserId);
         public void DeleteSubscribeRequest(SubscribeRequest Model);
         public void UpdateSubscribeRequest(SubscribeRequest Model);
@@ -42,7 +42,7 @@ namespace Core.Service
            return _SubscribeRequestRepository.List().ToList();
         }
 
-        public SubscribeRequest GetSubscribeRequestDate(int Id)
+        public SubscribeRequest GetSubscribeRequestData(int Id)
         {
             return _SubscribeRequestRepository.Find(Id);
         }

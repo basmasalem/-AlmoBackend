@@ -1,5 +1,6 @@
 using Core.Model;
 using Core.Service;
+using Core.Service.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,9 @@ namespace Core.Api
             services.AddScoped<ISubscribeRequestRepository, SubscribeRequestRepository>();     
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISubscribeRequestService, SubscribeRequestService>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<ISettingsRepository, SettingsRepository>();
+            services.AddScoped<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
