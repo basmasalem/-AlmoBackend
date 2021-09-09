@@ -18,7 +18,6 @@ namespace Core.Service
 
 
 
-
     }
     public class SettingsService : ISettingsService
     {

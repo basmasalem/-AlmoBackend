@@ -1,5 +1,6 @@
 ﻿using Core.Service;
 using Core.Service.Utilities;
+using Core.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,25 @@ namespace Core.Api.Controllers
                 if (!string.IsNullOrEmpty(obj.TermsAndConditions))
                     obj.TermsAndConditions = Regex.Replace(obj.TermsAndConditions, "<.*?>", String.Empty);
                 return Ok(obj.TermsAndConditions);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet("Packages")]
+
+        public IActionResult Packages()
+        {
+            try
+            {
+                var obj = _settingsService.GetSettingsData();
+              
+                return Ok(new List<PackagesVM>() {
+                    new PackagesVM() {Code = 1,Title = "OneMonthCost", Cost=obj.OneMonthCost },
+                    new PackagesVM() {Code = 2,Title = "ThreeMonthsCost", Cost = obj.ThreeMonthsCost } 
+                });
             }
             catch (Exception ex)
             {

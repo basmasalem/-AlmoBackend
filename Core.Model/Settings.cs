@@ -9,7 +9,8 @@ namespace Core.Model
         public int SettingsId { get; set; }
         public string PrivacyPolcy { get; set; }
         public string TermsAndConditions { get; set; }
+        public decimal ThreeMonthsCost { get; set; }
 
-        
+        public decimal OneMonthCost { get; set; }
     }
 }
