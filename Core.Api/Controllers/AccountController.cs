@@ -1,13 +1,20 @@
 ﻿
+using Core.Api.Helpers;
 using Core.Api.ViewModels;
+using Core.Model;
 using Core.Service;
 using Core.Service.Utilities;
 using Core.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Api.Controllers
@@ -17,14 +24,17 @@ namespace Core.Api.Controllers
     public class AccountController : BaseController
     {
         private readonly IUserService _userService;
+      
         private readonly ISubscribeRequestService _subscribeRequestService;
-
+        private readonly AppSettings _appSettings;
         private readonly IEmailSender _emailSender;
 
-        public AccountController( IEmailSender _emailSender,IUserService userService, ISubscribeRequestService subscribeRequestService):base(_emailSender)
+        public AccountController(IOptions<AppSettings> appSettings, IEmailSender _emailSender,IUserService userService, ISubscribeRequestService subscribeRequestService):base(_emailSender)
         {
             _userService = userService;
             _subscribeRequestService = subscribeRequestService;
+           
+            _appSettings = appSettings.Value;
             this._emailSender = _emailSender;
      
         }
@@ -38,9 +48,20 @@ namespace Core.Api.Controllers
                 if (user == null)
                     return NotFound();
                 else if (user != null && user.IsEmailVerified != true)
-                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى" });
+                    return Ok(new TokenVM()
+                    {
+                        UserId = user.UserId,
+                        Email = user.Email,
+                        Password = user.Password,
+                        Name = user.Name,
+                        Token = generateJwtToken(user),
+                        Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى",
+                        IsEmailVerified = user.IsEmailVerified ?? false,
+                        CurrentSubscribtion = _subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
+
+                    });
                 else if (user.IsActive!=true) 
-                    return Ok(new { message = "هذا المستخدم مسجل من قبل ولكن عير مفعل" }); 
+                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن غير مفعل عن طريق الادمن" }); 
                 else
                 {
                     return Ok(new TokenVM()
@@ -49,7 +70,7 @@ namespace Core.Api.Controllers
                         Email = user.Email,
                         Password = user.Password,
                         Name = user.Name,
-                        Token = GenerateToken(user.Email, user.Password),
+                        Token = generateJwtToken(user),
                         Message = "تم تسجيل الدخول بنجاح",
                         IsEmailVerified=user.IsEmailVerified??false,
                         CurrentSubscribtion=_subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
@@ -81,8 +102,8 @@ namespace Core.Api.Controllers
                 else
                 {
                     
-                    user = _userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });
-                var Res =   await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                    user = _userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });              
+                    await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
                     {
                         Subject = "",
                         UserName = user.Name,
@@ -94,7 +115,7 @@ namespace Core.Api.Controllers
                         Email = user.Email,
                         Password = user.Password,
                         Name = user.Name,
-                        Token = GenerateToken(user.Email, user.Password),
+                        Token = generateJwtToken(user),
                         IsEmailVerified = user.IsEmailVerified ?? false,
                         Message ="تم التسجل بنجاح برجاء تفعيل الحساب",
                         OTP = OTP
@@ -176,10 +197,22 @@ namespace Core.Api.Controllers
 
 
         }
-        public string GenerateToken(string UserName, string Password)
+  
+        private string generateJwtToken(User user)
         {
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
-            return Base64Encode(UserName + ":" + Password + ":" + DateTime.Now.AddDays(7).ToShortDateString());
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserId.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
         public static string Base64Encode(string plainText)
         {

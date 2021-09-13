@@ -16,6 +16,8 @@ namespace Core.Model
         public decimal? Cost { get; set; }
         public DateTime? DateCreated { get; set; }
         public virtual User UserCreated { get; set; }
+        public string UserCardNumber { get; set; }
+        public string UserCardCVV { get; set; }
         public bool? IsDeleted { get; set; }
         public bool? IsActive { get; set; }
 

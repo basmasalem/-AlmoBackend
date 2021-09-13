@@ -15,7 +15,7 @@ namespace Core.Service
         public void DeleteSubscribeRequest(SubscribeRequest Model);
         public void UpdateSubscribeRequest(SubscribeRequest Model);
         public SubscribeRequest AddSubscribeRequest(SubscribeRequest Model);
-
+        public SubscribeRequest CheckRequest(int userId, DateTime? fromDate, DateTime? ToDate);
 
 
 
@@ -65,7 +65,10 @@ namespace Core.Service
         {
             return _SubscribeRequestRepository.List().Where(u=>(string.IsNullOrEmpty(Name)|| u.UserCreated.Name.Contains(Name))&&(string.IsNullOrEmpty(Email) || u.UserCreated.Email==Email)).ToList();
         }
-
+        public SubscribeRequest CheckRequest(int userId,DateTime? fromDate,DateTime? ToDate)
+        {
+            return _SubscribeRequestRepository.List().FirstOrDefault(r=>r.UserId==userId && r.IsActive==true && r.FromDate.Value.Date==fromDate.Value.Date && ToDate.Value.Date==r.ToDate.Value.Date);
+        }
         public void UpdateSubscribeRequest( SubscribeRequest Model)
         {
              _SubscribeRequestRepository.Update(Model);

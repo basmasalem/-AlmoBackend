@@ -22,8 +22,26 @@ namespace Core.Api.Controllers
             this._emailSender = _emailSender;
      
         }
+        public int CurrentUser
+        {
+            get
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var claims = User.Claims;
+                    return
 
-       
+                        int.Parse(claims?.FirstOrDefault(x => x.Type.Equals("id", StringComparison.OrdinalIgnoreCase))?.Value);
+
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+
         public string createEmailBody(string title, EmailModel model, string page)
         {
 

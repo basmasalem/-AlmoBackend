@@ -22,7 +22,21 @@
 
 
                         <div class="row gutters">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">قيمة الاشتراك لمدة شهر  </label>
+                                    <input type="text" class="form-control" asp-for="OneMonthCost" placeholder=" ">
+                                    <span asp-validation-for="OneMonthCost" class="text-danger"></span>
+                                </div>
+                            </div>
 
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">قيمة الاشتراك لمدة  ثلاث اشهر  </label>
+                                    <input type="text" class="form-control" asp-for="ThreeMonthsCost" placeholder=" ">
+                                    <span asp-validation-for="ThreeMonthsCost" class="text-danger"></span>
+                                </div>
+                            </div>
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card m-0">
                                     <div class="card-header">
