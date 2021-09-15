@@ -1,0 +1,58 @@
+﻿
+@model Help
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"> بيانات طلب المساعدة</li>
+
+    </ol>
+</div>
+<!-- Page header end -->
+<!-- Content wrapper start -->
+<div class="content-wrapper">
+    <div class="row justify-content-center gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <form action="AddEdit" method="post" id="frmAddUser" enctype="multipart/form-data">
+
+                <div class="card m-0">
+                    <div class="card-header">
+                        <div class="card-title"><i class="icon-grid"></i> بيانات طلب المساعدة </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">أسم المشترك </label>
+                                    <input type="text" class="form-control" asp-for="Name" placeholder=" ">
+
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name">البريد الخاص بالمشترك </label>
+                                    <input type="text" class="form-control" asp-for="Email" placeholder=" ">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="Name"> النص </label>
+                                    <textarea type="text" class="form-control" asp-for="Text" placeholder=" "></textarea>
+
+                                </div>
+                            </div>
+                          
+                        </div>
+
+
+                        <a href="@Url.Action("Index","Help")" class="btn btn-primary2 float-right"  ><i class="icon-save"></i> عودة</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Content wrapper end -->
+

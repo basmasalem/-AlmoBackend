@@ -1,8 +1,8 @@
 ﻿
-@model SubscribeRequest
+@model Problem
 <div class="page-header">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active"> بيانات الطلب</li>
+        <li class="breadcrumb-item active"> بيانات المشكلة</li>
 
     </ol>
 </div>
@@ -15,7 +15,7 @@
 
                 <div class="card m-0">
                     <div class="card-header">
-                        <div class="card-title"><i class="icon-grid"></i> بيانات الاشتراك </div>
+                        <div class="card-title"><i class="icon-grid"></i> بيانات المشكلة </div>
 
                     </div>
                     <div class="card-body">
@@ -35,38 +35,36 @@
 
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label for="Name"> مدة الاشتراك </label>
-                                    <input type="text" class="form-control" asp-for="Period" placeholder=" ">
+                                    <label for="Name"> العنوان </label>
+                                    <textarea type="text" class="form-control" asp-for="Title" placeholder=" "></textarea>
 
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label for="Name"> تكلفة الاشتراك </label>
-                                    <input type="text" class="form-control" asp-for="Cost" placeholder=" ">
+                                    <label for="Name"> النص </label>
+                                    <textarea type="text" class="form-control" asp-for="Text" placeholder=" "></textarea>
 
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label for="Name"> تاريخ بداية الاشتراك </label>
-                                    <input type="text" class="form-control" asp-for="FromDate" placeholder=" ">
+                            <div class="col-xl-12 col-lglg-12 col-md-12 col-sm-12 col-12">
+                                <div class="">
+                                    <div class="card-body">
+                                        <div class="avatar xxxl">
+                                            <img src="@("https://localhost:44367/Attachments/"+Model.Image)" class="circle img-avatar" alt="Wafi Admin">
+
+                                        </div>
+                                    </div>
 
                                 </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label for="Name"> تاريخ نهاية الاشتراك </label>
-                                    <input type="text" class="form-control" asp-for="ToDate" placeholder=" ">
 
-                                </div>
                             </div>
                         </div>
 
 
-                        <a href="@Url.Action("Index","Requests")" class="btn btn-primary2 float-right"  ><i class="icon-save"></i> عودة</a>
+                        <a href="@Url.Action("Index","Problems")" class="btn btn-primary2 float-right"  ><i class="icon-save"></i> عودة</a>
 
                     </div>
                 </div>

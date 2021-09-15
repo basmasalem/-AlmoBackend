@@ -38,6 +38,10 @@ namespace Core.Admin
             services.AddScoped<ISubscribeRequestService, SubscribeRequestService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<ISettingsRepository, SettingsRepository>();
+            services.AddScoped<IHelpRepository, HelpRepository>();
+            services.AddScoped<IHelpService, HelpService>();
+            services.AddScoped<IProblemRepository, ProblemRepository>();
+            services.AddScoped<IProblemService, ProblemService>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,

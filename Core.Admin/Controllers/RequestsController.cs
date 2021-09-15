@@ -39,7 +39,7 @@ namespace Core.Admin.Controllers
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
             SubscribeRequests = _subscribeRequestService.SearchInSubscribeRequests(Name, Email).ToPagedList(page, ItemPerPage);
-            return PartialView("_ListUsers", SubscribeRequests);
+            return PartialView("_ListRequests", SubscribeRequests);
         }
         public IActionResult AddEdit(int? Id)
         {

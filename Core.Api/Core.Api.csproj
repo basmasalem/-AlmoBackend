@@ -22,5 +22,9 @@
     <ProjectReference Include="..\Core.ViewModel\Core.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attachments\" />
+  </ItemGroup>
+
 
 </Project>

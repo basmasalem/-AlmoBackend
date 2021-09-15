@@ -19,7 +19,7 @@ function DeleteUser(id) {
     $.post(url, { "id": id }, function (res) {
         if (res == "1") {
             updateUser();
-            alert("تم الحذف بنجاح");
+            alertt("تم الحذف بنجاح");
         }
     });
 }

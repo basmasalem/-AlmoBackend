@@ -1,0 +1,55 @@
+﻿
+@model IPagedList<Core.Model.Help>
+@{
+    int indexer = (int)ViewBag.index;
+}
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>اسم العميل </th>
+                    <th>البريد الإلكتروني</th>
+                    <th>نص المساعدة</th>                   
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Name
+                    </td>
+                    <td>@item.Email</td>
+                    <td>@item.Text
+                    </td>
+                    <td>
+                        <div class="td-actions">
+
+                            <a class="trash_link" href="#" id="btnHelpDelete_@item.HelpId" onclick="ConfirmDeleteHelp(@item.HelpId)" data-url="@Url.Action("DeleteHelp")"><i class="icon-trash"></i></a>
+                            <a class="edit_link" href="@Url.Action("AddEdit","Help",new { Id=item.HelpId})"><i class="icon-edit"></i></a>
+                            
+                        </div>
+                    </td>
+
+                </tr>
+                }
+
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("ListHelps", new { page }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+    {
+        ActiveLiElementClass = "page-item active",
+        PageClasses = new[] { "page-link" },
+        UlElementClasses = new[] { "pagination justify-content-center primary" },
+        LiElementClasses = new[] { "page-item" }
+
+    },
+    new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "divListHelps" }))

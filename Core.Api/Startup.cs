@@ -71,7 +71,10 @@ namespace Core.Api
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ISettingsRepository, SettingsRepository>();
             services.AddScoped<ISettingsService, SettingsService>();
-           
+            services.AddScoped<IHelpRepository, HelpRepository>();
+            services.AddScoped<IHelpService, HelpService>();
+            services.AddScoped<IProblemRepository, ProblemRepository>();
+            services.AddScoped<IProblemService, ProblemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

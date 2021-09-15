@@ -11,7 +11,7 @@
         });
 
     });
-});
+
 
 function DeleteRequest(id) {
     debugger;
@@ -19,7 +19,7 @@ function DeleteRequest(id) {
     $.post(url, { "id": id }, function (res) {
         if (res == "1") {
             updateRequest();
-            alert("تم الحذف بنجاح");
+            alertt("تم الحذف بنجاح");
         }
     });
 }
@@ -42,6 +42,15 @@ function ConfirmChangeStatusRequest(id) {
 function ConfirmDeleteRequest(id) {
     debugger;
     confirmAlert("هل تريد حذف هذا الطلب؟", DeleteRequest, id);
+
+}
+function updateRequest() {
+    var urlRequest = RequestDiv.data('request-url');
+    $.get(urlRequest).done(function (res) {
+        debugger;
+        HrlpDiv.html(res);
+    });
+
 }
 
 

@@ -23,11 +23,10 @@ namespace Core.Admin.Controllers
         [HttpPost]
         public IActionResult AddEdit(Settings model)
         {
-            //validate Article  
+       
             if (!ModelState.IsValid)
                 return View("AddEdit", model);
-
-            //save Article into database   
+     
             try
             {
                 if (model.SettingsId == 0)
@@ -37,7 +36,6 @@ namespace Core.Admin.Controllers
 
                     _SettingsService.UpdateSettings(model);
                 }
-
 
             }
             catch (Exception ex)
