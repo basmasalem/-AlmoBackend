@@ -10,15 +10,15 @@ namespace Core.Admin.Controllers
 {
     public class SettingsController : Controller
     {
-        private readonly ISettingsService _SettingsService;
-        public SettingsController(ISettingsService settingsService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public SettingsController(IServiceWrapper serviceWrapper)
         {
-            _SettingsService = settingsService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult Index()
         {
-            return View(_SettingsService.GetSettingsData()??new Settings());
+            return View(_serviceWrapper.settingsService.GetSettingsData()??new Settings());
         }
         [HttpPost]
         public IActionResult AddEdit(Settings model)
@@ -30,11 +30,11 @@ namespace Core.Admin.Controllers
             try
             {
                 if (model.SettingsId == 0)
-                    _SettingsService.AddSettings(model);
+                    _serviceWrapper.settingsService.AddSettings(model);
                 else
                 {
 
-                    _SettingsService.UpdateSettings(model);
+                    _serviceWrapper.settingsService.UpdateSettings(model);
                 }
 
             }

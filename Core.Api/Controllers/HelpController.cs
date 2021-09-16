@@ -1,8 +1,11 @@
-﻿using Core.Model;
+﻿
+using Core.Api.Helpers;
+using Core.Model;
 using Core.Service;
 using Core.Service.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +17,13 @@ namespace Core.Api.Controllers
     [ApiController]
     public class HelpController : BaseController
     {
-        private readonly IHelpService _helpService;
-        private readonly IEmailSender _emailSender;
-
-        public HelpController(ISettingsService settingsService, IEmailSender emailSender, IHelpService helpService) : base(emailSender)
+        private readonly IServiceWrapper _serviceWrapper;
+        public HelpController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper) : base(appSettings)
         {
-            _helpService = helpService;
-            _emailSender = emailSender;
+            _serviceWrapper = serviceWrapper;
 
         }
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost("AddHelp")]
         public IActionResult AddHelp(Help HelpVM)
         {
@@ -31,7 +31,7 @@ namespace Core.Api.Controllers
             {
                 HelpVM.DateCreated = DateTime.Now;
                 HelpVM.UserId = CurrentUser;
-                _helpService.AddHelp(HelpVM);
+                _serviceWrapper.helpService.AddHelp(HelpVM);
                 return Ok(new
                 {
                     message = "تم الاشتراك بنجاح"

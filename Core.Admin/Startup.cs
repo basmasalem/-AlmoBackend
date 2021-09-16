@@ -14,6 +14,7 @@ using Core.Service;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Core.Model.Repositories;
 
 namespace Core.Admin
 {
@@ -42,6 +43,8 @@ namespace Core.Admin
             services.AddScoped<IHelpService, HelpService>();
             services.AddScoped<IProblemRepository, ProblemRepository>();
             services.AddScoped<IProblemService, ProblemService>();
+            services.AddScoped<IServiceWrapper, ServiceWrapper>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,

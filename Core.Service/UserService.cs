@@ -8,13 +8,13 @@ namespace Core.Service
     public interface IUserService
     {
         public List<User> GetAllUsers();
-        public List<User> SearchInUsers(string Name,string Email);
+        public List<User> SearchInUsers(string Name,string Email, int TypeId);
         public User GetUserData(int Id);
         public void DeleteUser(User Model);
         public void UpdateUser(User Model);
         public User AddUser(User Model);
 
-        public User ValidateUser(string Email, string Password);
+        public User ValidateUser(string Email, string Password, int TypeId);
 
 
     }
@@ -45,9 +45,9 @@ namespace Core.Service
             return _userRepository.Find(Id);
         }
 
-        public List<User> SearchInUsers(string Name, string Email)
+        public List<User> SearchInUsers(string Name, string Email, int TypeId)
         {
-            return _userRepository.List().Where(u=>(string.IsNullOrEmpty(Name)|| u.Name.Contains(Name))&&(string.IsNullOrEmpty(Email) || u.Email==Email)).ToList();
+            return _userRepository.List().Where(u=>((string.IsNullOrEmpty(Name)|| u.Name.Contains(Name))&&(string.IsNullOrEmpty(Email) || u.Email==Email))&& u.IsDeleted!=true && u.UserTypeId == TypeId).ToList();
         }
 
         public void UpdateUser( User Model)
@@ -55,9 +55,9 @@ namespace Core.Service
              _userRepository.Update(Model);
         }
 
-        public User ValidateUser(string Email, string Password)
+        public User ValidateUser(string Email, string Password, int TypeId)
         {
-            return _userRepository.List().FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted!=true);
+            return _userRepository.List().FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted!=true && x.UserTypeId==TypeId);
         }
     }
 }

@@ -11,30 +11,13 @@
     <div class="row justify-content-center gutters">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 
-            <form asp-action="SearchRequests" asp-controller="Requests" method="post" id="frmSearchRequest" enctype="multipart/form-data">
+            <form asp-action="SearchReports" asp-controller="Reports" method="post" id="frmSearchReport" enctype="multipart/form-data">
 
                 <div class="card m-0">
                     <div class="card-header">
                         <div class="card-title display_item "><i class="icon-grid"></i> عرض بيانات</div>
-                      @*  <a class="display_item add_data" href="@Url.Action("AddEdit","Requests")"><i class="icon-plus"></i> إضافة</a>*@
                     </div>
                     <div class="card-body">
-                        <div class="row gutters">
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label for="Name">الإسم </label>
-                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label for="Name">البريد الإلكتروني</label>
-                                    <input type="text" class="form-control" id="Email" name="Email" placeholder="">
-                                </div>
-                            </div>
-
-                        </div>
-
                         <div class="row gutters">
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="form-group">
@@ -50,7 +33,9 @@
                             </div>
 
                         </div>
-                        <a href="#" class="btn btn-primary3 float-right" id="btnSearchRequest"><i class="icon-search"></i> بحث</a>
+
+
+                        <a href="#" class="btn btn-primary3 float-right" id="btnSearchReport"><i class="icon-search"></i> بحث</a>
 
                     </div>
                 </div>
@@ -65,8 +50,8 @@
                 <div class="card-header">
                     <div class="card-title"><i class="icon-info"></i> بيانات البحث</div>
                 </div>
-                <div id="divListRequests" data-request-url="@Url.Action("ListRequests","Requests")">
-                    @Html.Action("ListRequests", "Requests")
+                <div id="divListReports" data-Report-url="@Url.Action("ListReports","Reports")">
+                    @Html.Action("ListReports", "Reports")
                 </div>
             </div>
 
@@ -76,5 +61,5 @@
 <!-- Content wrapper end -->
 @section Scripts{
 
-    <script src="~/js/Views/Request.js" asp-append-version="true"></script>
+    <script src="~/js/Views/Report.js" asp-append-version="true"></script>
 }

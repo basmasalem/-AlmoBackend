@@ -9,7 +9,7 @@ namespace Core.Service
     public interface ISubscribeRequestService
     {
         public List<SubscribeRequest> GetAllSubscribeRequests();
-        public List<SubscribeRequest> SearchInSubscribeRequests(string Name,string Email);
+        public List<SubscribeRequest> SearchInSubscribeRequests(string Name,string Email, DateTime? fromDate, DateTime? ToDate);
         public SubscribeRequest GetSubscribeRequestData(int Id);
         public SubscribeRequestVM LastUserSubscribeRequestDate(int UserId);
         public void DeleteSubscribeRequest(SubscribeRequest Model);
@@ -61,9 +61,11 @@ namespace Core.Service
             }).LastOrDefault();
         }
 
-        public List<SubscribeRequest> SearchInSubscribeRequests(string Name, string Email)
+        public List<SubscribeRequest> SearchInSubscribeRequests(string Name, string Email, DateTime? fromDate, DateTime? ToDate)
         {
-            return _SubscribeRequestRepository.List().Where(u=>(string.IsNullOrEmpty(Name)|| u.UserCreated.Name.Contains(Name))&&(string.IsNullOrEmpty(Email) || u.UserCreated.Email==Email)).ToList();
+            return _SubscribeRequestRepository.List().Where(u=>(string.IsNullOrEmpty(Name)|| u.UserCreated.Name.Contains(Name))
+            &&(string.IsNullOrEmpty(Email) || u.UserCreated.Email==Email) 
+            && ((!fromDate.HasValue|| u.FromDate.Value.Date >= fromDate.Value.Date ) && (!ToDate.HasValue|| ToDate.Value.Date <= u.ToDate.Value.Date))).ToList();
         }
         public SubscribeRequest CheckRequest(int userId,DateTime? fromDate,DateTime? ToDate)
         {

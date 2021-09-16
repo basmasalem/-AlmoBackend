@@ -1,10 +1,18 @@
-﻿using Core.Service.Utilities;
+﻿using Core.Api.Helpers;
+using Core.Model;
+using Core.Service;
+using Core.Service.Utilities;
 using Core.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Api.Controllers
@@ -12,15 +20,15 @@ namespace Core.Api.Controllers
   
     public class BaseController : ControllerBase
     {
-    
-     
-        private readonly IEmailSender _emailSender;
 
-        [Obsolete]
-        public BaseController(IEmailSender _emailSender)
+
+        private readonly AppSettings _appSettings;
+        
+        public BaseController(IOptions<AppSettings> appSettings)
         {
-            this._emailSender = _emailSender;
-     
+            _appSettings = appSettings.Value;
+   
+
         }
         public int CurrentUser
         {
@@ -40,7 +48,22 @@ namespace Core.Api.Controllers
                 }
             }
         }
+        public string generateJwtToken(User user)
+        {
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserId.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
 
         public string createEmailBody(string title, EmailModel model, string page)
         {

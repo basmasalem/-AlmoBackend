@@ -1,9 +1,11 @@
-﻿using Core.Model;
+﻿using Core.Api.Helpers;
+using Core.Model;
 using Core.Service;
 using Core.Service.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,16 +19,13 @@ namespace Core.Api.Controllers
     [ApiController]
     public class ProblemController : BaseController
     {
-        private readonly IProblemService _ProblemService;
-        private readonly IEmailSender _emailSender;
-
-        public ProblemController( IEmailSender emailSender, IProblemService ProblemService) : base(emailSender)
+        private readonly IServiceWrapper _serviceWrapper;
+        public ProblemController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper) : base(appSettings)
         {
-            _ProblemService = ProblemService;
-            _emailSender = emailSender;
+            _serviceWrapper = serviceWrapper;
 
         }
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost("AddProblem")]
         public IActionResult AddProblem(Problem ProblemVM)
         {
@@ -34,7 +33,7 @@ namespace Core.Api.Controllers
             {
                 ProblemVM.DateCreated = DateTime.Now;
                 ProblemVM.UserId = CurrentUser;
-                _ProblemService.AddProblem(ProblemVM);
+                _serviceWrapper.ProblemService.AddProblem(ProblemVM);
                 var bytes = Convert.FromBase64String(ProblemVM.Image);// a.base64image 
                                                                   //or full path to file in temp location
                                                                   //var filePath = Path.GetTempFileName();
@@ -58,7 +57,7 @@ namespace Core.Api.Controllers
                     }
                 }
                 ProblemVM.Image = ProblemVM.ProblemId + ".jpg";
-                _ProblemService.UpdateProblem(ProblemVM);
+                 _serviceWrapper.ProblemService.UpdateProblem(ProblemVM);
                 return Ok(new
                 {
                     message = "تم ارسال المشكلة بنجاح"

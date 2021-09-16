@@ -23,25 +23,18 @@ namespace Core.Api.Controllers
     [ApiController]
     public class AccountController : BaseController
     {
-        private readonly IUserService _userService;
-      
-        private readonly ISubscribeRequestService _subscribeRequestService;
-        private readonly AppSettings _appSettings;
-        private readonly IEmailSender _emailSender;
 
-        public AccountController(IOptions<AppSettings> appSettings, IEmailSender _emailSender,IUserService userService, ISubscribeRequestService subscribeRequestService):base(_emailSender)
+      
+        private readonly IServiceWrapper _serviceWrapper;
+        public AccountController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper):base( appSettings)
         {
-            _userService = userService;
-            _subscribeRequestService = subscribeRequestService;
-           
-            _appSettings = appSettings.Value;
-            this._emailSender = _emailSender;
-     
+            _serviceWrapper = serviceWrapper;
+          
         }
         [HttpPost("LogIn")]
         public  IActionResult LogIn(LoginVM loginVM)
         {
-            var user =  _userService.ValidateUser(loginVM.Email, loginVM.Password);
+            var user =  _serviceWrapper.userService.ValidateUser(loginVM.Email, loginVM.Password,1);
             try
             {      
 
@@ -57,7 +50,7 @@ namespace Core.Api.Controllers
                         Token = generateJwtToken(user),
                         Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى",
                         IsEmailVerified = user.IsEmailVerified ?? false,
-                        CurrentSubscribtion = _subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
+                        CurrentSubscribtion = _serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
 
                     });
                 else if (user.IsActive!=true) 
@@ -73,7 +66,7 @@ namespace Core.Api.Controllers
                         Token = generateJwtToken(user),
                         Message = "تم تسجيل الدخول بنجاح",
                         IsEmailVerified=user.IsEmailVerified??false,
-                        CurrentSubscribtion=_subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
+                        CurrentSubscribtion=_serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
 
                     }); ;
                 }
@@ -88,7 +81,7 @@ namespace Core.Api.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterAsync(RegisterVM registerVM)
         {
-            var user = _userService.ValidateUser(registerVM.Email, registerVM.Password);
+            var user =  _serviceWrapper.userService.ValidateUser(registerVM.Email, registerVM.Password,1);
             string OTP = new Random().Next(0000, 9999).ToString();
             try
             {
@@ -102,8 +95,8 @@ namespace Core.Api.Controllers
                 else
                 {
                     
-                    user = _userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password });              
-                    await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                    user =  _serviceWrapper.userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password,UserTypeId=1 });              
+                    await  _serviceWrapper.emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
                     {
                         Subject = "",
                         UserName = user.Name,
@@ -135,13 +128,13 @@ namespace Core.Api.Controllers
         [HttpPost("SendOTP")]
         public async Task<IActionResult> SendOTP (int userId)
         {
-            var user = _userService.GetUserData(userId);
+            var user =  _serviceWrapper.userService.GetUserData(userId);
             string OTP = new Random().Next(0000, 9999).ToString();
             try
             {
                 if (user != null && user.IsEmailVerified != true)
                 {
-                    var Res = await _emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                    var Res = await _serviceWrapper.emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
                     {
                         Subject = "",
                         UserName = user.Name,
@@ -170,13 +163,13 @@ namespace Core.Api.Controllers
         [HttpPost("AccountActivation")]
         public IActionResult AccountActivation(int userId)
         {
-            var user = _userService.GetUserData(userId);
+            var user =  _serviceWrapper.userService.GetUserData(userId);
             try
             {
                 if (user != null && user.IsEmailVerified != true)
                 {
                     user.IsEmailVerified = true;
-                    _userService.UpdateUser(user);
+                     _serviceWrapper.userService.UpdateUser(user);
                     return Ok(new
                     {
 
@@ -197,23 +190,68 @@ namespace Core.Api.Controllers
 
 
         }
-  
-        private string generateJwtToken(User user)
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync(string Email)
         {
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var user =  _serviceWrapper.userService.SearchInUsers("",Email,1).FirstOrDefault();
+            try
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserId.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                if (user != null && (user.IsEmailVerified != true))
+                {
+                 
+                    return Ok(new
+                    {
+
+                        Code = 2,
+                        Message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى"
+
+                    });
+                }
+                else if (user != null && (user.IsActive != true))
+                {
+
+                    return Ok(new
+                    {
+
+                        Code = 3,
+                        Message = "هذا المستخدم مسجل من قبل ولكن عير مفعل"
+
+                    });
+                }
+                else if(user != null)
+                {
+                    string OTP = new Random().Next(0000, 9999).ToString();
+                    await  _serviceWrapper.emailSender.SendEmailAsync(user.Email, "استعادة كلمه المرور", createEmailBody("كود التفعيل", new EmailModel()
+                    {
+                        Subject = "",
+                        UserName = user.Name,
+                        code = OTP
+                    }, ""));
+
+                    return Ok(new
+                    {
+
+                        Code = 1,
+                        Message = "تم ارسال كود عن طريق البريد الالكترونى بنجاح"
+
+                    });
+
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+
         }
+
+
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);

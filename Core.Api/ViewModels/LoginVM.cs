@@ -11,18 +11,21 @@ namespace Core.Api.ViewModels
         [Required(ErrorMessage = " البريد الإلكترونى غير صحيح")]
         [EmailAddress(ErrorMessage = "البريد الإلكترونى غير صحيح")]
         public string Email { get; set; }
+
         [Required(ErrorMessage = " الرقم السرى غير صحيح")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
     }
     public class RegisterVM
     {
         [Required(ErrorMessage = " البريد الإلكترونى غير صحيح")]
         [EmailAddress(ErrorMessage = "البريد الإلكترونى غير صحيح")]
         public string Email { get; set; }
-        [Required(ErrorMessage = " الاسم  غير صحيح")]
-     
+
+        [Required(ErrorMessage = " الاسم  غير صحيح")]     
         public string Name { get; set; }
+
         [Required(ErrorMessage = " الرقم السرى غير صحيح")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -42,5 +45,19 @@ namespace Core.Api.ViewModels
         [StringLength(100, MinimumLength = 6, ErrorMessage = "علي الاقل 6 احرف او ارقام")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "كلمة المرور و تاكيد كلمة المرور غير متطابقين")]
         public string ConfirmPassword { get; set; }
+    }
+    public class UpdatePasswordView
+    {
+
+        [Required(ErrorMessage = " الاسم  غير صحيح")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = " ")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "علي الاقل 6 احرف او ارقام")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = " ")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "علي الاقل 6 احرف او ارقام")]
+        public string OldPassword { get; set; }
     }
 }

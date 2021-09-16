@@ -11,10 +11,10 @@ namespace Core.Admin.Controllers
 {
     public class UserController : BaseController
     {
-        private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public UserController(IServiceWrapper serviceWrapper)
         {
-            _userService = userService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult Index()
@@ -28,7 +28,7 @@ namespace Core.Admin.Controllers
             IPagedList<User> Users;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Users = _userService.GetAllUsers().ToPagedList(page, ItemPerPage);
+            Users = _serviceWrapper.userService.GetAllUsers().ToPagedList(page, ItemPerPage);
             return PartialView("_ListUsers", Users);
         }
         [HttpPost]
@@ -38,14 +38,14 @@ namespace Core.Admin.Controllers
             IPagedList<User> Users;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Users = _userService.SearchInUsers(Name, Email).ToPagedList(page, ItemPerPage);
+            Users =  _serviceWrapper.userService.SearchInUsers(Name, Email,1).ToPagedList(page, ItemPerPage);
             return PartialView("_ListUsers", Users);
         }
         public IActionResult AddEdit(int? Id)
         {
             User model = new User() { IsActive = true, UserTypeId=1 };
             if (Id.HasValue && Id != 0)
-                model = _userService.GetUserData((int)Id);
+                model =  _serviceWrapper.userService.GetUserData((int)Id);
 
             return View(model);
         }
@@ -60,11 +60,11 @@ namespace Core.Admin.Controllers
             try
             {
                 if (model.UserId == 0)
-                    _userService.AddUser(model);
+                     _serviceWrapper.userService.AddUser(model);
                 else
                 {
                    
-                    _userService.UpdateUser(model);
+                     _serviceWrapper.userService.UpdateUser(model);
                 }
 
                
@@ -78,16 +78,16 @@ namespace Core.Admin.Controllers
         }
         public IActionResult DeleteUser(int id)
         {
-            var user = _userService.GetUserData(id);
-            _userService.DeleteUser(user);
+            var user =  _serviceWrapper.userService.GetUserData(id);
+             _serviceWrapper.userService.DeleteUser(user);
           
             return Json("1");
         }
         public IActionResult ChangeStatus(int id)
         {
-            var article = _userService.GetUserData(id);
+            var article =  _serviceWrapper.userService.GetUserData(id);
             article.IsActive = !(article.IsActive??false);
-            _userService.UpdateUser(article);
+             _serviceWrapper.userService.UpdateUser(article);
            
             return Json("1");
         }

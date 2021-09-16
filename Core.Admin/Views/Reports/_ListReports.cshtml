@@ -1,0 +1,39 @@
+﻿
+@model List<Core.Model.SubscribeRequest>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>نوع الاشتراك </th>
+                    <th>عدد المستخدمين</th>
+                    <th>الاجمالى</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>ِشهر</td>
+                    <td>@(Model.Where(x=>x.Period==1).Count())</td>
+                    <td>@(Model.Where(x=>x.Period==1).Sum(z=>z.Cost))</td>
+
+                </tr>
+                <tr>
+                    <td>ثلاث اشهر</td>
+                    <td>@(Model.Where(x=>x.Period==3).Count())</td>
+                    <td>@(Model.Where(x=>x.Period==3).Sum(z=>z.Cost))</td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">اجمالى الكلى </td>
+                  
+                    <td>@(Model.Sum(z=>z.Cost))</td>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

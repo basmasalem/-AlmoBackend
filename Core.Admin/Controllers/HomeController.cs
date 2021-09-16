@@ -13,19 +13,18 @@ namespace Core.Admin.Controllers
     public class HomeController : BaseController
     {
 
-        private readonly ISubscribeRequestService _subscribeRequestService;
-        private readonly IUserService _userService;
-        public HomeController(IUserService userService, ISubscribeRequestService subscribeRequestService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public HomeController(IServiceWrapper serviceWrapper)
         {
-            _userService = userService;
-            _subscribeRequestService = subscribeRequestService;
+            _serviceWrapper = serviceWrapper;
+
         }
 
         public IActionResult Index()
         {
-            ViewBag.Users = _userService.GetAllUsers().Count();
-            ViewBag.Requests = _subscribeRequestService.GetAllSubscribeRequests().Count();
-            ViewBag.Earnings = _subscribeRequestService.GetAllSubscribeRequests().Sum(s=>s.Cost);
+            ViewBag.Users = _serviceWrapper.userService.GetAllUsers().Count();
+            ViewBag.Requests = _serviceWrapper.subscribeRequestService.GetAllSubscribeRequests().Count();
+            ViewBag.Earnings =  _serviceWrapper.subscribeRequestService.GetAllSubscribeRequests().Sum(s=>s.Cost);
             return View();
         }
 

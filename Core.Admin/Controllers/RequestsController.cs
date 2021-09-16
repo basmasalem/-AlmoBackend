@@ -11,10 +11,10 @@ namespace Core.Admin.Controllers
 {
     public class RequestsController : BaseController
     {
-        private readonly ISubscribeRequestService _subscribeRequestService;
-        public RequestsController(ISubscribeRequestService subscribeRequestService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public RequestsController(IServiceWrapper serviceWrapper)
         {
-            _subscribeRequestService = subscribeRequestService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult Index()
@@ -28,24 +28,24 @@ namespace Core.Admin.Controllers
             IPagedList<SubscribeRequest> SubscribeRequest;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            SubscribeRequest = _subscribeRequestService.GetAllSubscribeRequests().ToPagedList(page, ItemPerPage);
+            SubscribeRequest = _serviceWrapper.subscribeRequestService.GetAllSubscribeRequests().ToPagedList(page, ItemPerPage);
             return PartialView("_ListRequests", SubscribeRequest);
         }
         [HttpPost]
-        public IActionResult SearchRequests(string Name = "", string Email = "", int page = 1)
+        public IActionResult SearchRequests(DateTime? FromDate, DateTime? ToDate, string Name = "", string Email = "", int page = 1)
 
         {
             IPagedList<SubscribeRequest> SubscribeRequests;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            SubscribeRequests = _subscribeRequestService.SearchInSubscribeRequests(Name, Email).ToPagedList(page, ItemPerPage);
+            SubscribeRequests =  _serviceWrapper.subscribeRequestService.SearchInSubscribeRequests(Name, Email,FromDate,ToDate).ToPagedList(page, ItemPerPage);
             return PartialView("_ListRequests", SubscribeRequests);
         }
         public IActionResult AddEdit(int? Id)
         {
             SubscribeRequest model = new SubscribeRequest() { };
             if (Id.HasValue && Id != 0)
-                model = _subscribeRequestService.GetSubscribeRequestData((int)Id);
+                model =  _serviceWrapper.subscribeRequestService.GetSubscribeRequestData((int)Id);
 
             return View(model);
         }
@@ -60,11 +60,11 @@ namespace Core.Admin.Controllers
             try
             {
                 if (model.UserId == 0)
-                    _subscribeRequestService.AddSubscribeRequest(model);
+                     _serviceWrapper.subscribeRequestService.AddSubscribeRequest(model);
                 else
                 {
 
-                    _subscribeRequestService.UpdateSubscribeRequest(model);
+                     _serviceWrapper.subscribeRequestService.UpdateSubscribeRequest(model);
                 }
 
 
@@ -78,16 +78,16 @@ namespace Core.Admin.Controllers
         }
         public IActionResult DeleteRequest(int id)
         {
-            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestData(id);
-            _subscribeRequestService.DeleteSubscribeRequest(subscribeRequest);
+            var subscribeRequest =  _serviceWrapper.subscribeRequestService.GetSubscribeRequestData(id);
+             _serviceWrapper.subscribeRequestService.DeleteSubscribeRequest(subscribeRequest);
 
             return Json("1");
         }
         public IActionResult ChangeStatus(int id)
         {
-            var subscribeRequest = _subscribeRequestService.GetSubscribeRequestData(id);
+            var subscribeRequest =  _serviceWrapper.subscribeRequestService.GetSubscribeRequestData(id);
             subscribeRequest.IsActive = !(subscribeRequest.IsActive ?? false);
-            _subscribeRequestService.UpdateSubscribeRequest(subscribeRequest);
+             _serviceWrapper.subscribeRequestService.UpdateSubscribeRequest(subscribeRequest);
 
             return Json("1");
         }

@@ -1,6 +1,7 @@
 
 using Core.Api.Helpers;
 using Core.Model;
+using Core.Model.Repositories;
 using Core.Service;
 using Core.Service.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -75,6 +76,8 @@ namespace Core.Api
             services.AddScoped<IHelpService, HelpService>();
             services.AddScoped<IProblemRepository, ProblemRepository>();
             services.AddScoped<IProblemService, ProblemService>();
+            services.AddScoped<IServiceWrapper, ServiceWrapper>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

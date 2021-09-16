@@ -12,10 +12,10 @@ namespace Core.Admin.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserService _userService;
-        public AccountController(IUserService userService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public AccountController(IServiceWrapper serviceWrapper)
         {
-            _userService = userService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult LogIn()
@@ -32,7 +32,7 @@ namespace Core.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _userService.ValidateUser(model.Email, model.Password);
+                var user = _serviceWrapper.userService.ValidateUser(model.Email, model.Password,0);
                 if (user != null)
                 {
                     var userClaims = new List<Claim>()

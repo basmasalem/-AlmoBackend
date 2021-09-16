@@ -11,10 +11,10 @@ namespace Core.Admin.Controllers
 {
     public class HelpController : BaseController
     {
-        private readonly IHelpService _helpService;
-        public HelpController(IHelpService helpService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public HelpController(IServiceWrapper serviceWrapper)
         {
-            _helpService = helpService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult Index()
@@ -26,7 +26,7 @@ namespace Core.Admin.Controllers
             IPagedList<Help> Helps;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Helps = _helpService.GetAllHelps().ToPagedList(page, ItemPerPage);
+            Helps = _serviceWrapper.helpService.GetAllHelps().ToPagedList(page, ItemPerPage);
             return PartialView("_ListHelps", Helps);
         }
         [HttpPost]
@@ -35,21 +35,21 @@ namespace Core.Admin.Controllers
             IPagedList<Help> Helps;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Helps = _helpService.GetAllHelps(Name, Email).ToPagedList(page, ItemPerPage);
+            Helps =  _serviceWrapper.helpService.GetAllHelps(Name, Email).ToPagedList(page, ItemPerPage);
             return PartialView("_ListHelps", Helps);
         }
         public IActionResult AddEdit(int? Id)
         {
             Help model = new Help() { };
             if (Id.HasValue && Id != 0)
-                model = _helpService.GetHelpData((int)Id);
+                model =  _serviceWrapper.helpService.GetHelpData((int)Id);
 
             return View(model);
         }
         public IActionResult DeleteHelp(int id)
         {
-            var help = _helpService.GetHelpData(id);
-            _helpService.DeleteHelp(help);
+            var help =  _serviceWrapper.helpService.GetHelpData(id);
+             _serviceWrapper.helpService.DeleteHelp(help);
 
             return Json("1");
         }

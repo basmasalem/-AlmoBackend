@@ -1,9 +1,11 @@
-﻿using Core.Api.ViewModels;
+﻿using Core.Api.Helpers;
+using Core.Api.ViewModels;
 using Core.Model;
 using Core.Service;
 using Core.Service.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Core.Api.Controllers
@@ -13,25 +15,19 @@ namespace Core.Api.Controllers
     [ApiController]
     public class RequestController : BaseController
     {
-        private readonly ISubscribeRequestService _subscribeRequestService;
-        private readonly ISettingsService _settingsService;
-
-        private readonly IEmailSender _emailSender;
-
-        public RequestController(ISettingsService settingsService,IEmailSender emailSender, ISubscribeRequestService subscribeRequestService) : base(emailSender)
+        private readonly IServiceWrapper _serviceWrapper;
+        public RequestController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper) : base(appSettings)
         {
-            _subscribeRequestService = subscribeRequestService;
-            _settingsService = settingsService;
-            _emailSender = emailSender;
+            _serviceWrapper = serviceWrapper;
 
         }
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost("AddRequest")]
         public IActionResult AddRequest(RequestVM requestVM)
         {
             try
             {
-                Settings settings = _settingsService.GetSettingsData();
+                Settings settings = _serviceWrapper.settingsService.GetSettingsData();
                 int monthesNo = requestVM.PackageCode == 1 ? 1 : 3;
                 SubscribeRequest subscribeRequest = new SubscribeRequest()
                 {
@@ -45,7 +41,7 @@ namespace Core.Api.Controllers
                     IsActive = true,
                     UserId=CurrentUser
                 };
-                if(_subscribeRequestService.CheckRequest(CurrentUser, subscribeRequest.FromDate,subscribeRequest.ToDate)!=null)
+                if(_serviceWrapper.subscribeRequestService.CheckRequest(CurrentUser, subscribeRequest.FromDate,subscribeRequest.ToDate)!=null)
                 {
                     return Ok(new
                     {
@@ -59,7 +55,7 @@ namespace Core.Api.Controllers
                 }
                 else
                 {
-                    _subscribeRequestService.AddSubscribeRequest(subscribeRequest);
+                    _serviceWrapper.subscribeRequestService.AddSubscribeRequest(subscribeRequest);
                     return Ok(new
                     {
                         FromDate = subscribeRequest.FromDate,

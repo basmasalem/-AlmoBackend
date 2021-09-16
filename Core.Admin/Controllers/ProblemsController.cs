@@ -11,10 +11,10 @@ namespace Core.Admin.Controllers
 {
     public class ProblemsController : BaseController
     {
-        private readonly IProblemService _problemsService;
-        public ProblemsController(IProblemService problemsService)
+        private readonly IServiceWrapper _serviceWrapper;
+        public ProblemsController(IServiceWrapper serviceWrapper)
         {
-            _problemsService = problemsService;
+            _serviceWrapper = serviceWrapper;
 
         }
         public IActionResult Index()
@@ -26,7 +26,7 @@ namespace Core.Admin.Controllers
             IPagedList<Problem> Problems;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Problems = _problemsService.GetAllProblems().ToPagedList(page, ItemPerPage);
+            Problems = _serviceWrapper.ProblemService.GetAllProblems().ToPagedList(page, ItemPerPage);
             return PartialView("_ListProblems", Problems);
         }
         [HttpPost]
@@ -35,21 +35,21 @@ namespace Core.Admin.Controllers
             IPagedList<Problem> Problemss;
             ViewBag.type = 1;
             ViewBag.index = ItemPerPage * (page - 1) + 1;
-            Problemss = _problemsService.GetAllProblems(Name, Email).ToPagedList(page, ItemPerPage);
+            Problemss =  _serviceWrapper.ProblemService.GetAllProblems(Name, Email).ToPagedList(page, ItemPerPage);
             return PartialView("_ListProblems", Problemss);
         }
         public IActionResult AddEdit(int? Id)
         {
             Problem model = new Problem() { };
             if (Id.HasValue && Id != 0)
-                model = _problemsService.GetProblemData((int)Id);
+                model =  _serviceWrapper.ProblemService.GetProblemData((int)Id);
 
             return View(model);
         }
         public IActionResult DeleteProblem(int id)
         {
-            var problem = _problemsService.GetProblemData(id);
-            _problemsService.DeleteProblem(problem);
+            var problem =  _serviceWrapper.ProblemService.GetProblemData(id);
+             _serviceWrapper.ProblemService.DeleteProblem(problem);
 
             return Json("1");
         }
