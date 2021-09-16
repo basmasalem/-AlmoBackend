@@ -23,7 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attachments\" />
+    <Folder Include="wwwroot\Attachments\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Attachments\2.jpg" />
+    <None Include="wwwroot\Attachments\a.jpg" />
   </ItemGroup>
 
 

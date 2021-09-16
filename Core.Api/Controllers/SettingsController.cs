@@ -14,7 +14,7 @@ namespace Core.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Helpers.Authorize]
 
     public class SettingsController : BaseController
     {

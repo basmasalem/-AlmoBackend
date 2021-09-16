@@ -25,7 +25,7 @@ namespace Core.Api.Controllers
             _serviceWrapper = serviceWrapper;
 
         }
-        [Microsoft.AspNetCore.Authorization.Authorize]
+        [Helpers.Authorize]
         [HttpPost("AddProblem")]
         public IActionResult AddProblem(Problem ProblemVM)
         {
@@ -39,7 +39,7 @@ namespace Core.Api.Controllers
                                                                   //var filePath = Path.GetTempFileName();
 
                 // full path to file in current project location
-                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "Attachments");
+                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Attachments");
                 Debug.WriteLine(filedir);
                 Debug.WriteLine(Directory.Exists(filedir));
                 if (!Directory.Exists(filedir))

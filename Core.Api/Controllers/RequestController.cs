@@ -21,7 +21,7 @@ namespace Core.Api.Controllers
             _serviceWrapper = serviceWrapper;
 
         }
-        [Microsoft.AspNetCore.Authorization.Authorize]
+        [Helpers.Authorize]
         [HttpPost("AddRequest")]
         public IActionResult AddRequest(RequestVM requestVM)
         {

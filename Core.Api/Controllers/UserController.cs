@@ -22,7 +22,7 @@ namespace Core.Api.Controllers
             _serviceWrapper = serviceWrapper;
 
         }
-        [Microsoft.AspNetCore.Authorization.Authorize]
+        [Helpers.Authorize]
         [HttpPost("UpdateProfile")]
         public IActionResult UpdateProfile(UpdatePasswordView UpdatePasswordVM)
         {

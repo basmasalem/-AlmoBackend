@@ -14,11 +14,13 @@ namespace Core.Api.Helpers
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
-      
-        public JwtMiddleware(RequestDelegate next)
+        private readonly AppSettings _appSettings;
+
+        public JwtMiddleware(IOptions<AppSettings> appSettings,RequestDelegate next)
         {
             _next = next;
-           
+            _appSettings = appSettings.Value;
+
         }
 
         public async Task Invoke(HttpContext context, IUserService userService)
@@ -36,7 +38,7 @@ namespace Core.Api.Helpers
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(token);
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -49,14 +51,16 @@ namespace Core.Api.Helpers
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-
+                var password = (jwtToken.Claims.First(x => x.Type == "password").Value);
+                var user = userService.GetUserData(userId);
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetUserData(userId);
+                context.Items["User"] =userService.ValidateUser(user.Email,password,1) ;
             }
-            catch
+            catch(Exception e)
             {
                 // do nothing if jwt validation fails
                 // user is not attached to context so request won't have access to secure routes
+                Console.WriteLine(e);
             }
         }
     }

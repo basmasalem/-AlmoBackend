@@ -23,7 +23,7 @@ namespace Core.Api.Controllers
             _serviceWrapper = serviceWrapper;
 
         }
-        [Microsoft.AspNetCore.Authorization.Authorize]
+        [Helpers.Authorize]
         [HttpPost("AddHelp")]
         public IActionResult AddHelp(Help HelpVM)
         {
