@@ -35,9 +35,9 @@ namespace Core.Model {
             return _appDBContext.Settings.Find(id);
         }
 
-        public IList<Settings> List()
+        public IQueryable<Settings> List()
         {
-            return _appDBContext.Settings.ToList();
+            return _appDBContext.Settings;
         }
 
         public void Update(Settings entity)

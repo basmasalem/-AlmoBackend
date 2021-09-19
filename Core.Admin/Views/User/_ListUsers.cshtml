@@ -10,7 +10,7 @@
                 <tr>
                     <th>الإسم</th>
                     <th>البريد الإلكتروني</th>
-
+                    <th>   مدة الاشتراك الحالى</th>
                     <th></th>
 
                 </tr>
@@ -18,22 +18,22 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Email</td>
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@(item.SubscribeRequests.LastOrDefault()==null?"لا يوحد":item.SubscribeRequests.LastOrDefault()?.Period.ToString())</td>
+                    <td>
+                        <div class="td-actions">
 
-                        <td>
-                            <div class="td-actions">
+                            <a class="trash_link" href="#" id="btnUserDelete_@item.UserId" onclick="ConfirmDeleteUser(@item.UserId)" data-url="@Url.Action("DeleteUser")"><i class="icon-trash"></i></a>
+                            <a class="edit_link" href="@Url.Action("AddEdit","User",new { Id=item.UserId})"><i class="icon-edit"></i></a>
+                            <a href="#" title="@((item.IsActive??false)?"تعطيل":"تفعيل")" class="@((item.IsActive??false)?"actine_btn":"disable_btn")" id="btnUserStatus_@item.UserId" onclick="ConfirmChangeStatusUser(@item.UserId)" data-url="@Url.Action("ChangeStatus")">
+                                <i class="@((item.IsActive??false)?"icon-unlock":"icon-lock")"></i>
+                            </a>
+                        </div>
+                    </td>
 
-                                <a class="trash_link" href="#" id="btnUserDelete_@item.UserId" onclick="ConfirmDeleteUser(@item.UserId)" data-url="@Url.Action("DeleteUser")"><i class="icon-trash"></i></a>
-                                <a class="edit_link" href="@Url.Action("AddEdit","User",new { Id=item.UserId})"><i class="icon-edit"></i></a>
-                                <a href="#" title="@((item.IsActive??false)?"تعطيل":"تفعيل")" class="@((item.IsActive??false)?"actine_btn":"disable_btn")" id="btnUserStatus_@item.UserId" onclick="ConfirmChangeStatusUser(@item.UserId)" data-url="@Url.Action("ChangeStatus")">
-                                    <i class="@((item.IsActive??false)?"icon-unlock":"icon-lock")"></i>
-                                </a>
-                            </div>
-                        </td>
-
-                    </tr>
+                </tr>
                 }
 
 

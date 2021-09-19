@@ -1,5 +1,8 @@
 ﻿
 @model User
+@{
+    string adminUrl = configuration.GetValue<string>("AdminUrl");
+}
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item active">تعديل بيانات المستخدم</li>
@@ -46,7 +49,18 @@
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-xl-12 col-lglg-12 col-md-12 col-sm-12 col-12">
+                                <div class="">
+                                    <div class="card-body">
+                                        <div class="avatar xxxl">
+                                            <img src="@(adminUrl+"Attachments/"+Model.Image+".jpg")" class="circle img-avatar" alt="Wafi Admin">
 
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
 
 

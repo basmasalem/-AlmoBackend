@@ -35,9 +35,9 @@ namespace Core.Model {
             return _appDBContext.Users.Find(id);
         }
 
-        public IList<User> List()
+        public IQueryable<User> List()
         {
-            return _appDBContext.Users.Where(u => u.IsDeleted != true).ToList();
+            return _appDBContext.Users.Where(u => u.IsDeleted != true);
         }
 
         public void Update(User entity)

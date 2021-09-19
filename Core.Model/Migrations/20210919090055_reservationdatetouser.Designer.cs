@@ -4,14 +4,16 @@ using Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Core.Model.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210919090055_reservationdatetouser")]
+    partial class reservationdatetouser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,35 +51,6 @@ namespace Core.Model.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Help");
-                });
-
-            modelBuilder.Entity("Core.Model.Notification", b =>
-                {
-                    b.Property<int>("NotificationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ToUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("NotificationId");
-
-                    b.HasIndex("ToUserId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Core.Model.Problem", b =>
@@ -199,9 +172,6 @@ namespace Core.Model.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
@@ -242,15 +212,6 @@ namespace Core.Model.Migrations
                     b.Navigation("UserCreated");
                 });
 
-            modelBuilder.Entity("Core.Model.Notification", b =>
-                {
-                    b.HasOne("Core.Model.User", "ToUser")
-                        .WithMany("Notifications")
-                        .HasForeignKey("ToUserId");
-
-                    b.Navigation("ToUser");
-                });
-
             modelBuilder.Entity("Core.Model.Problem", b =>
                 {
                     b.HasOne("Core.Model.User", "UserCreated")
@@ -275,8 +236,6 @@ namespace Core.Model.Migrations
 
             modelBuilder.Entity("Core.Model.User", b =>
                 {
-                    b.Navigation("Notifications");
-
                     b.Navigation("SubscribeRequests");
                 });
 #pragma warning restore 612, 618

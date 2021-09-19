@@ -32,7 +32,7 @@ namespace Core.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _serviceWrapper.userService.ValidateUser(model.Email, model.Password,0);
+                var user = _serviceWrapper.userService.ValidateLogedUser(model.Email, model.Password,0,"").UserData;
                 if (user != null)
                 {
                     var userClaims = new List<Claim>()

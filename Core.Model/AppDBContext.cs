@@ -15,6 +15,7 @@ namespace Core.Model
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Help> Help { get; set; }
         public DbSet<Problem> Problems { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<SubscribeRequest> SubscribeRequests { get; set; }
     }
 }

@@ -46,6 +46,7 @@ namespace Core.Admin
             services.AddScoped<IServiceWrapper, ServiceWrapper>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddControllersWithViews();
+            services.Configure<AppSettings>(Configuration.GetSection("ImagePath"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
             options =>

@@ -15,6 +15,7 @@ namespace Core.Service
           IProblemService ProblemService { get; }
           IHelpService helpService { get; }
           IUserService userService { get; }
+          INotificationService notificationService { get; }
    
     }
     public class ServiceWrapper : IServiceWrapper
@@ -25,7 +26,7 @@ namespace Core.Service
         private IHelpService _helpService;
         private IUserService _userService;
         private IProblemService _problemsService;
-
+        private INotificationService _notificationService;
         public IRepositoryWrapper _RepositoryWrapper;
         public ServiceWrapper(IRepositoryWrapper RepositoryWrappe)
         {
@@ -102,7 +103,17 @@ namespace Core.Service
             }
         }
 
-       
+        public INotificationService notificationService
+        {
+            get
+            {
+                if (_notificationService == null)
+                {
+                    _notificationService = new NotificationService(_RepositoryWrapper.NotificationRepository);
+                }
+                return _notificationService;
+            }
+        }
 
     }
 }

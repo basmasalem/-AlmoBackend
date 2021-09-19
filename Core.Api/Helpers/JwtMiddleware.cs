@@ -54,7 +54,7 @@ namespace Core.Api.Helpers
                 var password = (jwtToken.Claims.First(x => x.Type == "password").Value);
                 var user = userService.GetUserData(userId);
                 // attach user to context on successful jwt validation
-                context.Items["User"] =userService.ValidateUser(user.Email,password,1) ;
+                context.Items["User"] =userService.ValidateLogedUser(user.Email,password,1,"").UserData ;
             }
             catch(Exception e)
             {

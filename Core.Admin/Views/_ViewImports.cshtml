@@ -5,9 +5,12 @@
 @using Core.Admin.Models.ViewModels;
 @using Core.Model;
 @using X.PagedList.Mvc.Core;
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration;
 @*import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
 
 @using X.PagedList;
 @using X.PagedList.Web.Common;
 @addTagHelper *,Core.Admin
+
 

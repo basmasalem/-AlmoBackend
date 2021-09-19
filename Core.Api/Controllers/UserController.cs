@@ -17,9 +17,11 @@ namespace Core.Api.Controllers
     public class UserController : BaseController
     {
         private readonly IServiceWrapper _serviceWrapper;
+        private readonly AppSettings _appSettings;
         public UserController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper) : base(appSettings)
         {
             _serviceWrapper = serviceWrapper;
+            _appSettings = appSettings.Value;
 
         }
         [Helpers.Authorize]
@@ -43,6 +45,7 @@ namespace Core.Api.Controllers
                         Password = user.Password,
                         Name = user.Name,
                         Token = generateJwtToken(user),
+                        ImgaePath = _appSettings.ImagePath + user.Image + ".jpg",
                         Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى",
                         IsEmailVerified = user.IsEmailVerified ?? false,
                         CurrentSubscribtion = _serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
@@ -52,8 +55,11 @@ namespace Core.Api.Controllers
                     return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن غير مفعل عن طريق الادمن" });
                 else
                 {
+                    string userImage = "UserImage_" + user.UserId;
+                    SaveImage(UpdatePasswordVM.Image,userImage);
                     user.Name = UpdatePasswordVM.Name;
                     user.Password = UpdatePasswordVM.Password;
+                    user.Image = userImage;
                     _serviceWrapper.userService.UpdateUser(user);
                     return Ok(new TokenVM()
                     {
@@ -61,6 +67,7 @@ namespace Core.Api.Controllers
                         Email = user.Email,
                         Password = user.Password,
                         Name = user.Name,
+                        ImgaePath=_appSettings.ImagePath + user.Image + ".jpg",
                         Token = generateJwtToken(user),
                         Message = "تم تعديل بنجاح",
                         IsEmailVerified = user.IsEmailVerified ?? false,

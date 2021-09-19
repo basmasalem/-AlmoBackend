@@ -1,5 +1,8 @@
 ﻿
 @model Problem
+@{ 
+    string adminUrl = configuration.GetValue<string>("AdminUrl");
+}
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item active"> بيانات المشكلة</li>
@@ -53,7 +56,7 @@
                                 <div class="">
                                     <div class="card-body">
                                         <div class="avatar xxxl">
-                                            <img src="@("https://api-almo.repoteq.com/Attachments/"+Model.Image)" class="circle img-avatar" alt="Wafi Admin">
+                                            <img src="@(adminUrl+"Attachments/"+Model.Image+".jpg")" class="circle img-avatar" alt="Wafi Admin">
 
                                         </div>
                                     </div>

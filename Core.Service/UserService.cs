@@ -1,4 +1,5 @@
 ﻿using Core.Model;
+using Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace Core.Service
         public void UpdateUser(User Model);
         public User AddUser(User Model);
 
-        public User ValidateUser(string Email, string Password, int TypeId);
-
+        public ValidationResultVM ValidateRegisterdUser(string Email, string Password, int TypeId);
+        public ValidationResultVM ValidateLogedUser(string Email, string Password, int TypeId, string NotificationToken);
 
     }
     public class UserService : IUserService
@@ -55,9 +56,35 @@ namespace Core.Service
              _userRepository.Update(Model);
         }
 
-        public User ValidateUser(string Email, string Password, int TypeId)
+        public ValidationResultVM ValidateRegisterdUser(string Email, string Password, int TypeId)
         {
-            return _userRepository.List().FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted!=true && x.UserTypeId==TypeId);
+           User user=_userRepository.List().FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted!=true && x.UserTypeId==TypeId);
+            if (user != null && user.IsEmailVerified != true)
+                return new ValidationResultVM {UserData=user,  Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى" };
+            if (user != null && user.IsActive != true)
+                return new ValidationResultVM {UserData=user, Message = "هذا المستخدم مسجل من قبل ولكن غير مفعل" };
+            else if (user != null)
+                return new ValidationResultVM {UserData=user, Message = "هذا المستخدم مسجل من قبل" };
+            else return new ValidationResultVM { };
+        }
+        public ValidationResultVM ValidateLogedUser(string Email, string Password, int TypeId, string NotificationToken)
+        {
+            User user = _userRepository.List().FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted != true && x.UserTypeId == TypeId);
+            if (user != null && user.IsEmailVerified != true)
+                return new ValidationResultVM {  Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى" };
+            if (user != null && user.IsActive != true)
+            {               
+                return new ValidationResultVM { Message = "هذا المستخدم مسجل من قبل ولكن غير مفعل" };
+            }
+            else if (user != null)
+            {
+                user.UserToken = NotificationToken;
+                UpdateUser(user);
+                return new ValidationResultVM { UserData = user, Message = "تم تسجيل الدخول بنجاح" };
+
+            }
+            else return new ValidationResultVM { };
+           
         }
     }
 }

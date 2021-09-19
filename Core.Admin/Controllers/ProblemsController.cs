@@ -1,6 +1,7 @@
 ﻿using Core.Model;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,11 @@ namespace Core.Admin.Controllers
     public class ProblemsController : BaseController
     {
         private readonly IServiceWrapper _serviceWrapper;
-        public ProblemsController(IServiceWrapper serviceWrapper)
+        private readonly AppSettings _appSettings;
+        public ProblemsController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper)
         {
             _serviceWrapper = serviceWrapper;
-
+            _appSettings = appSettings.Value;
         }
         public IActionResult Index()
         {

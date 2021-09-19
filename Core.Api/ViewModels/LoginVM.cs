@@ -15,6 +15,7 @@ namespace Core.Api.ViewModels
         [Required(ErrorMessage = " الرقم السرى غير صحيح")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public string NotificationToken { get; set; }
 
     }
     public class RegisterVM
@@ -29,6 +30,7 @@ namespace Core.Api.ViewModels
         [Required(ErrorMessage = " الرقم السرى غير صحيح")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public string NotificationToken { get; set; }
     }
     public class ResetPasswordView
     {
@@ -59,5 +61,6 @@ namespace Core.Api.ViewModels
         [Required(ErrorMessage = " ")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "علي الاقل 6 احرف او ارقام")]
         public string OldPassword { get; set; }
+        public string Image { get; set; }
     }
 }

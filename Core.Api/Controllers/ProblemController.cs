@@ -34,29 +34,9 @@ namespace Core.Api.Controllers
                 ProblemVM.DateCreated = DateTime.Now;
                 ProblemVM.UserId = CurrentUser;
                 _serviceWrapper.ProblemService.AddProblem(ProblemVM);
-                var bytes = Convert.FromBase64String(ProblemVM.Image);// a.base64image 
-                                                                  //or full path to file in temp location
-                                                                  //var filePath = Path.GetTempFileName();
-
-                // full path to file in current project location
-                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Attachments");
-                Debug.WriteLine(filedir);
-                Debug.WriteLine(Directory.Exists(filedir));
-                if (!Directory.Exists(filedir))
-                { //check if the folder exists;
-                    Directory.CreateDirectory(filedir);
-                }
-                string file = Path.Combine(filedir, ProblemVM.ProblemId+".jpg");
-                
-                if (bytes.Length > 0)
-                {
-                    using (var stream = new FileStream(file, FileMode.Create))
-                    {
-                        stream.Write(bytes, 0, bytes.Length);
-                        stream.Flush();
-                    }
-                }
-                ProblemVM.Image = ProblemVM.ProblemId + ".jpg";
+                string ImageName = "ProblemImage_" + ProblemVM.ProblemId;
+                SaveImage(ProblemVM.Image,ImageName);
+                ProblemVM.Image = ImageName;
                  _serviceWrapper.ProblemService.UpdateProblem(ProblemVM);
                 return Ok(new
                 {

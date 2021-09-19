@@ -35,9 +35,9 @@ namespace Core.Model {
             return _appDBContext.SubscribeRequests.Find(id);
         }
 
-        public IList<SubscribeRequest> List()
+        public IQueryable<SubscribeRequest> List()
         {
-            return _appDBContext.SubscribeRequests.Where(u => u.IsDeleted != true).ToList();
+            return _appDBContext.SubscribeRequests.Where(u => u.IsDeleted != true).OrderByDescending(x=>x.DateCreated);
         }
 
         public void Update(SubscribeRequest entity)

@@ -11,6 +11,7 @@ namespace Core.Model.Repositories
          IUserRepository UserRepository { get; }
          IProblemRepository ProblemRepository { get; }
          IHelpRepository HelpRepository { get; }
+         INotificationRepository NotificationRepository { get; }
     }
     public class RepositoryWrapper : IRepositoryWrapper
     {
@@ -19,6 +20,7 @@ namespace Core.Model.Repositories
         private  IUserRepository _userRepository;
         private  IProblemRepository _ProblemRepository;
         private  IHelpRepository _HelpRepository;
+        private INotificationRepository _NotificationRepository;
         public   AppDBContext _appDBContext;
         public RepositoryWrapper(AppDBContext appDBContext)
         {
@@ -79,6 +81,16 @@ namespace Core.Model.Repositories
                 return _HelpRepository;
             }
         }
-
+        public INotificationRepository NotificationRepository
+        {
+            get
+            {
+                if (_NotificationRepository == null)
+                {
+                    _NotificationRepository = new NotificationRepository(_appDBContext);
+                }
+                return _NotificationRepository;
+            }
+        }
     }
 }

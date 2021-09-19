@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -63,7 +64,33 @@ namespace Core.Api.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        public void SaveImage(string Image,string  Name)
+        {
+            var bytes = Convert.FromBase64String(Image);// a.base64image 
+                                                                  //or full path to file in temp location
+                                                                  //var filePath = Path.GetTempFileName();
 
+            // full path to file in current project location
+            string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Attachments");
+            Debug.WriteLine(filedir);
+            Debug.WriteLine(Directory.Exists(filedir));
+            if (!Directory.Exists(filedir))
+            { //check if the folder exists;
+                Directory.CreateDirectory(filedir);
+            }
+            string file = Path.Combine(filedir, Name + ".jpg");
+            if (System.IO.File.Exists(file))
+                System.IO.File.Delete(file);
+            if (bytes.Length > 0)
+            {
+                using (var stream = new FileStream(file, FileMode.Create))
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                    stream.Flush();
+                }
+            }
+             
+        }
         public string createEmailBody(string title, EmailModel model, string page)
         {
 

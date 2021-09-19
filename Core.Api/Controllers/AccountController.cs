@@ -26,50 +26,45 @@ namespace Core.Api.Controllers
 
       
         private readonly IServiceWrapper _serviceWrapper;
+        private readonly AppSettings _appSettings;
         public AccountController(IOptions<AppSettings> appSettings, IServiceWrapper serviceWrapper):base( appSettings)
         {
             _serviceWrapper = serviceWrapper;
+            _appSettings = appSettings.Value;
           
         }
         [HttpPost("LogIn")]
         public  IActionResult LogIn(LoginVM loginVM)
         {
-            var user =  _serviceWrapper.userService.ValidateUser(loginVM.Email, loginVM.Password,1);
+            var user =  _serviceWrapper.userService.ValidateLogedUser(loginVM.Email, loginVM.Password,1,loginVM.NotificationToken);
             try
-            {      
+            {
 
-                if (user == null)
+                if (user.UserData == null && user.Message==null)
                     return NotFound();
-                else if (user != null && user.IsEmailVerified != true)
-                    return Ok(new TokenVM()
-                    {
-                        UserId = user.UserId,
-                        Email = user.Email,
-                        Password = user.Password,
-                        Name = user.Name,
-                        Token = generateJwtToken(user),
-                        Message = " هذا المستخدم مسجل من قبل ولكن غير مفعل  عن طريق البريد الالكترونى",
-                        IsEmailVerified = user.IsEmailVerified ?? false,
-                        CurrentSubscribtion = _serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
-
-                    });
-                else if (user.IsActive!=true) 
-                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن غير مفعل عن طريق الادمن" }); 
                 else
                 {
+                   if(user.UserData==null)
+                    {
+                        return Ok(new { message =user.Message });
+                    }
                     return Ok(new TokenVM()
                     {
-                        UserId=user.UserId,
-                        Email = user.Email,
-                        Password = user.Password,
-                        Name = user.Name,
-                        Token = generateJwtToken(user),
-                        Message = "تم تسجيل الدخول بنجاح",
-                        IsEmailVerified=user.IsEmailVerified??false,
-                        CurrentSubscribtion=_serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserId)
+                        UserId = user.UserData.UserId,
+                        Email = user.UserData.Email,
+                        Password = user.UserData.Password,
+                        Name = user.UserData.Name,
+                        Token = generateJwtToken(user.UserData),
+                        Message = user.Message,
+                        IsEmailVerified = user.UserData.IsEmailVerified ?? false,
+                        ImgaePath = _appSettings.ImagePath + user.UserData.Image + ".jpg",
+                        CurrentSubscribtion = _serviceWrapper.subscribeRequestService.LastUserSubscribeRequestDate(user.UserData.UserId)
 
-                    }); ;
+                    });
                 }
+                   
+
+            
             }
             catch (Exception e)
             {
@@ -81,36 +76,40 @@ namespace Core.Api.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterAsync(RegisterVM registerVM)
         {
-            var user =  _serviceWrapper.userService.ValidateUser(registerVM.Email, registerVM.Password,1);
+            var user =  _serviceWrapper.userService.ValidateRegisterdUser(registerVM.Email, registerVM.Password,1);
             string OTP = new Random().Next(0000, 9999).ToString();
             try
             {
-                if (user != null && user.IsEmailVerified != true)
-                    return Ok(new { message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى" });
-                if (user !=null && user.IsActive != true)
-                    return Ok(new{ message= "هذا المستخدم مسجل من قبل ولكن عير مفعل" });
-               else if (user != null)
-                    return Ok(new { message = "هذا المستخدم مسجل من قبل" });
+                if (user.UserData != null )
+                    return Ok(new {message= user.Message });           
                
                 else
-                {
-                    
-                    user =  _serviceWrapper.userService.AddUser(new Model.User() {IsEmailVerified=false, IsActive = true, Email = registerVM.Email, Name = registerVM.Name, Password = registerVM.Password,UserTypeId=1 });              
-                    await  _serviceWrapper.emailSender.SendEmailAsync(user.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
+                {                  
+                    user.UserData =  _serviceWrapper.userService.AddUser(
+                        new User() {
+                            IsEmailVerified=false, 
+                            IsActive = true,
+                            Email = registerVM.Email,
+                            Name = registerVM.Name,
+                            Password = registerVM.Password,
+                            UserTypeId=1,
+                            ReservationDate=DateTime.Now });              
+                    await  _serviceWrapper.emailSender.SendEmailAsync(user.UserData.Email, "كود التفعيل", createEmailBody("كود التفعيل", new EmailModel()
                     {
                         Subject = "",
-                        UserName = user.Name,
+                        UserName = user.UserData.Name,
                         code = OTP
                     }, ""));
                     return Ok(new TokenVM()
                     {
-                        UserId = user.UserId,
-                        Email = user.Email,
-                        Password = user.Password,
-                        Name = user.Name,
-                        Token = generateJwtToken(user),
-                        IsEmailVerified = user.IsEmailVerified ?? false,
+                        UserId = user.UserData.UserId,
+                        Email = user.UserData.Email,
+                        Password = user.UserData.Password,
+                        Name = user.UserData.Name,
+                        Token = generateJwtToken(user.UserData),
+                        IsEmailVerified = user.UserData.IsEmailVerified ?? false,
                         Message ="تم التسجل بنجاح برجاء تفعيل الحساب",
+                        ImgaePath = _appSettings.ImagePath + user.UserData.Image + ".jpg",
                         OTP = OTP
 
 
@@ -250,12 +249,60 @@ namespace Core.Api.Controllers
 
 
         }
-
-
-        public static string Base64Encode(string plainText)
+        [HttpPost("SetNewPassword")]
+        public IActionResult SetNewPassword(string Email, string NewPassword)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            var user = _serviceWrapper.userService.SearchInUsers("", Email, 1).FirstOrDefault();
+            try
+            {
+                if (user != null && (user.IsEmailVerified != true))
+                {
+
+                    return Ok(new
+                    {
+
+                        Code = 2,
+                        Message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى"
+
+                    });
+                }
+                else if (user != null && (user.IsActive != true))
+                {
+
+                    return Ok(new
+                    {
+
+                        Code = 3,
+                        Message = "هذا المستخدم مسجل من قبل ولكن عير مفعل"
+
+                    });
+                }
+                else if (user != null)
+                {
+                    user.Password = NewPassword;
+                    _serviceWrapper.userService.UpdateUser(user);
+
+                    return Ok(new
+                    {
+
+                        Code = 1,
+                        Message = "تم تعديل الرقم السرى بنجاح"
+
+                    });
+
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+
         }
     }
 }

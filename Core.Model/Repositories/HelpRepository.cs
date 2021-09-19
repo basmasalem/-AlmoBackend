@@ -35,9 +35,9 @@ namespace Core.Model {
             return _appDBContext.Help.Find(id);
         }
 
-        public IList<Help> List()
+        public IQueryable<Help> List()
         {
-            return _appDBContext.Help.ToList();
+            return _appDBContext.Help.OrderByDescending(x=>x.DateCreated);
         }
 
         public void Update(Help entity)
