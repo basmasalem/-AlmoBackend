@@ -231,6 +231,7 @@ namespace Core.Api.Controllers
                     {
 
                         Code = 1,
+                        OTP=OTP,
                         Message = "تم ارسال كود عن طريق البريد الالكترونى بنجاح"
 
                     });
