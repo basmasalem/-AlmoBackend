@@ -22,7 +22,73 @@
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
 
             <div class="risks-block low h-117">
-                <i class="icon-line-graph"></i>
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2> @ViewBag.Users </h2>
+                    <p>اجمالي عدد المستخدمين المسجلين</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="risks-block low h-117">
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2>@ViewBag.UsersLast24hr</h2>
+                    <p> عدد المستخدمين في اخر 24 ساعة</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row gutters">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="risks-block low h-117">
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2>@ViewBag.Requests</h2>
+                    <p>اجمالي عدد المستخدمين المشتركين</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+
+            <div class="risks-block low h-117">
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2> @ViewBag.UaersAvarageInDay </h2>
+                    <p>متوسط المستخدمين في اليوم الواحد</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="risks-block low h-117">
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2>@ViewBag.RequestAvarageInDay</h2>
+                    <p>متوسط المشتركين في اليوم الواحد</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row gutters">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="risks-block low h-117">
+                <i class="icon-users"></i>
+                <div class="risk-details">
+                    <h2>@ViewBag.NewRequests</h2>
+                    <p>اجمالي جديد المشتركين </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+
+            <div class="risks-block low h-117">
+                <i class="icon-dollar-sign"></i>
                 <div class="risk-details">
                     <h2> @ViewBag.Earnings </h2>
                     <p>إجمالي الأرباح</p>
@@ -41,6 +107,28 @@
         </div>
 
     </div>
+    <div class="row gutters">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="risks-block low h-117">
+                <i class="icon-emoji-sad"></i>
+                <div class="risk-details">
+                    <h2>@ViewBag.Problems</h2>
+                    <p>عدد الشكاوي </p>
+                </div>
+            </div>
 
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+
+            <div class="risks-block low h-117">
+                <i class="icon-message"></i>
+                <div class="risk-details">
+                    <h2> @ViewBag.Messages </h2>
+                    <p>عدد الرسائل</p>
+                </div>
+            </div>
+        </div>
+       
+    </div>
 </div>
 <!-- Content wrapper end -->

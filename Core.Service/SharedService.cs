@@ -17,6 +17,9 @@ namespace Core.Service
           
             return "";
         }
-      
+      public void HomeData()
+        {
+
+        }
     }
 }
