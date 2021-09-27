@@ -1,4 +1,5 @@
 ﻿using Core.Api.Helpers;
+using Core.Model;
 using Core.Service;
 using Core.Service.Utilities;
 using Core.ViewModel;
@@ -31,17 +32,7 @@ namespace Core.Api.Controllers
             try
             {
                 var obj = _serviceWrapper.settingsService.GetSettingsData();
-                if(!string.IsNullOrEmpty(obj.PrivacyPolcy))
-                obj.PrivacyPolcy = Regex.Replace(obj.PrivacyPolcy, "<.*?>", String.Empty);
-                if (!string.IsNullOrEmpty(obj.StudyPlan))
-                    obj.StudyPlan = Regex.Replace(obj.StudyPlan, "<.*?>", String.Empty);
-                if (!string.IsNullOrEmpty(obj.TermsAndConditions))
-                    obj.TermsAndConditions = Regex.Replace(obj.TermsAndConditions, "<.*?>", String.Empty);
-                if (!string.IsNullOrEmpty(obj.AboutApp))
-                    obj.AboutApp = Regex.Replace(obj.AboutApp, "<.*?>", String.Empty);
-                if (!string.IsNullOrEmpty(obj.Credits))
-                    obj.Credits = Regex.Replace(obj.Credits, "<.*?>", String.Empty);
-            
+                ValidateText(obj);           
                 return Ok( new { 
                         TermsAndConditions=obj.TermsAndConditions, 
                         PrivacyPolcy=obj.PrivacyPolcy,                  
@@ -75,5 +66,35 @@ namespace Core.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpGet("Courses")]
+
+        public IActionResult Courses()
+        {
+            try
+            {
+                var ListCourses = _serviceWrapper.settingsService.GetAllCourse();
+
+                return Ok(ListCourses);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+        public void ValidateText(Settings obj)
+        {
+            if (!string.IsNullOrEmpty(obj.PrivacyPolcy))
+                obj.PrivacyPolcy = Regex.Replace(obj.PrivacyPolcy, "<.*?>", String.Empty);
+            if (!string.IsNullOrEmpty(obj.StudyPlan))
+                obj.StudyPlan = Regex.Replace(obj.StudyPlan, "<.*?>", String.Empty);
+            if (!string.IsNullOrEmpty(obj.TermsAndConditions))
+                obj.TermsAndConditions = Regex.Replace(obj.TermsAndConditions, "<.*?>", String.Empty);
+            if (!string.IsNullOrEmpty(obj.AboutApp))
+                obj.AboutApp = Regex.Replace(obj.AboutApp, "<.*?>", String.Empty);
+            if (!string.IsNullOrEmpty(obj.Credits))
+                obj.Credits = Regex.Replace(obj.Credits, "<.*?>", String.Empty);
+        }
     }
+    
 }

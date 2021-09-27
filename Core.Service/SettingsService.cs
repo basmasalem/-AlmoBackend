@@ -15,6 +15,7 @@ namespace Core.Service
         public void DeleteSettings(Settings Model);
         public void UpdateSettings(Settings Model);
         public Settings AddSettings(Settings Model);
+        public List<Course> GetAllCourse();
 
 
 
@@ -22,9 +23,11 @@ namespace Core.Service
     public class SettingsService : ISettingsService
     {
         private readonly ISettingsRepository _SettingsRepository;
-        public SettingsService(ISettingsRepository SettingsRepository)
+        private readonly ICourseRepository _CourseRepository;
+        public SettingsService(ISettingsRepository SettingsRepository, ICourseRepository CourseRepository)
         {
             _SettingsRepository = SettingsRepository;
+            _CourseRepository = CourseRepository;
         }
         public Settings AddSettings(Settings Model)
         {
@@ -43,8 +46,12 @@ namespace Core.Service
             return _SettingsRepository.List().FirstOrDefault();
         }
 
-       
-       
+        public List<Course> GetAllCourse()
+        {
+            return _CourseRepository.List().ToList();
+        }
+
+
 
         public void UpdateSettings(Settings Model)
         {

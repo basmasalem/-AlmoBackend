@@ -1,0 +1,68 @@
+﻿
+@model IPagedList<Core.Model.User>
+@{
+    int indexer = (int)ViewBag.index;
+    List<Course> courses = ViewBag.Courses as List<Course>;
+}
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="th">
+                <tr align="center">
+
+                    <th rowspan="2">الاسم </th>
+                    <th rowspan="2">البريد الالكتروني</th>
+                    <th rowspan="2"> مدة الاشتراك الحالى</th>
+                    <th colspan="6">التقدم</th>
+                    <th> </th>
+
+
+                </tr>
+                <tr>
+                    @foreach (var item in courses)
+                    {
+                        <th class="text-center">@item.Name  <span class="num"> (@item.ClassesNumber) &nbsp;<span>درس </span></span></th>
+
+                    }
+                   
+                </tr>
+            </thead>
+
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@(item.SubscribeRequests.LastOrDefault()==null?"لا يوحد":item.SubscribeRequests.LastOrDefault()?.Period.ToString())</td>
+
+                    @foreach (var courseItem in courses)
+                    {
+                        <td>@( item.CourseId==courseItem.CourseId?item.ClassNumber.ToString() : "-" )</td>
+                    }
+                  
+                <td>
+                    <a class="actine_btn2"  onclick="SetUserId(@item.UserId)"  ><span class="icon-question_answer"></span> التنبيهات</a>
+                    <a  data-toggle="modal" data-target="#basicModal" id="hiddenForFire"></a>
+                </td>
+                </tr>
+                }
+                </tbody>
+
+
+
+        </table>
+    </div>
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("ListSubscribedUsers", new { page }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+    {
+        ActiveLiElementClass = "page-item active",
+        PageClasses = new[] { "page-link" },
+        UlElementClasses = new[] { "pagination justify-content-center primary" },
+        LiElementClasses = new[] { "page-item" }
+
+    },
+    new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "divListSubscribedUsers" }))

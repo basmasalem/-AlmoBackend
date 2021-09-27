@@ -45,6 +45,7 @@ namespace Core.Admin
             services.AddScoped<IProblemService, ProblemService>();
             services.AddScoped<IServiceWrapper, ServiceWrapper>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddControllersWithViews();
             services.Configure<AppSettings>(Configuration.GetSection("ImagePath"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -53,6 +54,8 @@ namespace Core.Admin
             {
                 options.Cookie.Name = "AdminAlmo";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(180);
+                options.SlidingExpiration = true;
+                
                 options.LoginPath = new PathString("/Account/Login/");
                 options.LogoutPath = new PathString("/Account/Login/");
 

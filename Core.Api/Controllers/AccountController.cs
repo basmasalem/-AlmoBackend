@@ -3,18 +3,11 @@ using Core.Api.Helpers;
 using Core.Api.ViewModels;
 using Core.Model;
 using Core.Service;
-using Core.Service.Utilities;
 using Core.ViewModel;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Api.Controllers
@@ -195,28 +188,8 @@ namespace Core.Api.Controllers
             var user =  _serviceWrapper.userService.SearchInUsers("",Email,1).FirstOrDefault();
             try
             {
-                if (user != null && (user.IsEmailVerified != true))
-                {
-                 
-                    return Ok(new
-                    {
-
-                        Code = 2,
-                        Message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى"
-
-                    });
-                }
-                else if (user != null && (user.IsActive != true))
-                {
-
-                    return Ok(new
-                    {
-
-                        Code = 3,
-                        Message = "هذا المستخدم مسجل من قبل ولكن عير مفعل"
-
-                    });
-                }
+                if (CheckAccountValidation(user).Code != 1)
+                    return Ok(CheckAccountValidation(user));
                 else if(user != null)
                 {
                     string OTP = new Random().Next(0000, 9999).ToString();
@@ -256,28 +229,8 @@ namespace Core.Api.Controllers
             var user = _serviceWrapper.userService.SearchInUsers("", Email, 1).FirstOrDefault();
             try
             {
-                if (user != null && (user.IsEmailVerified != true))
-                {
-
-                    return Ok(new
-                    {
-
-                        Code = 2,
-                        Message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى"
-
-                    });
-                }
-                else if (user != null && (user.IsActive != true))
-                {
-
-                    return Ok(new
-                    {
-
-                        Code = 3,
-                        Message = "هذا المستخدم مسجل من قبل ولكن عير مفعل"
-
-                    });
-                }
+                if (CheckAccountValidation(user).Code != 1)
+                    return Ok(CheckAccountValidation(user));
                 else if (user != null)
                 {
                     user.Password = NewPassword;
@@ -304,6 +257,33 @@ namespace Core.Api.Controllers
             }
 
 
+        }
+        public ResulteModel CheckAccountValidation(User user)
+        {
+            if (user != null && (user.IsEmailVerified != true))
+            {
+                return (new ResulteModel()
+                {
+
+                    Code = 2,
+                    Message = " هذا المستخدم مسجل من قبل ولكن عير مفعل  عن طريق البريد الالكترونى"
+
+                });
+            }
+            else if (user != null && (user.IsActive != true))
+            {
+                return (new ResulteModel()
+                {
+
+                    Code = 3,
+                    Message = "هذا المستخدم مسجل من قبل ولكن عير مفعل"
+
+                });
+            }
+            else return (new ResulteModel()
+            {
+                Code = 1,             
+            });
         }
     }
 }

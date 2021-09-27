@@ -31,7 +31,7 @@ namespace Core.Admin.Models
         {
             string currentController = (string)ViewContext.RouteData.Values["controller"];
             string currentAction = (string)ViewContext.RouteData.Values["action"];
-            if (currentController == Controller /*&& currentAction == (Action ?? currentAction)*/)
+            if (currentController == Controller && currentAction == (Action ?? currentAction))
             {
                 if (output.Attributes.ContainsName("class"))
                 {

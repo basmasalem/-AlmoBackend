@@ -6328,8 +6328,10 @@ code {
     border-bottom: 2px solid #000;
 }
 .table-bordered .th th {
-    border: 1px solid #866607;
+    border: 1px solid #dee2e6;
     color: #000;
+	font-size: 15px;
+	white-space: nowrap;
 }
 .tr3 td
 {
@@ -6538,6 +6540,31 @@ code {
     padding: 8px 20px 4px 20px;
 }
 .add_data:hover
+{
+	color: #fff;
+}
+.footer-summ
+{
+	text-align: left;
+}
+th span.num
+{
+	display: block;
+	color: #32b89d;
+	margin-top: 10px;
+}
+.actine_btn2
+{
+	background: #32b89d;
+    color: #fff !important;
+    font-size: 14px;
+    padding: 5px 9px;
+    border-radius: 5px;
+	cursor: pointer !important;
+	white-space: nowrap;
+	margin: 5px 8px 5px 8px;
+}
+.actine_btn2:hover
 {
 	color: #fff;
 }

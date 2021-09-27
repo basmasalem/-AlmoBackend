@@ -52,11 +52,9 @@ namespace Core.Admin.Controllers
         [HttpPost]
         public IActionResult AddEdit(User model)
         {
-            //validate Article  
             if (!ModelState.IsValid)
                 return View("AddEdit", model);
 
-            //save Article into database   
             try
             {
                 if (model.UserId == 0)
@@ -90,6 +88,58 @@ namespace Core.Admin.Controllers
              _serviceWrapper.userService.UpdateUser(article);
            
             return Json("1");
+        }
+
+
+        public IActionResult SubscribedUsers()
+        {
+          
+            return View();
+        }
+
+        public IActionResult ListSubscribedUsers(int page = 1)
+
+        {
+            IPagedList<User> SubscribedUsers;
+            ViewBag.type = 1;
+            ViewBag.index = ItemPerPage * (page - 1) + 1;
+            ViewBag.Courses = _serviceWrapper.settingsService.GetAllCourse();
+            SubscribedUsers = _serviceWrapper.userService.GetAllSubscribedUsers().ToPagedList(page, ItemPerPage);
+            return PartialView("_ListSubscribedUsers", SubscribedUsers);
+        }
+        [HttpPost]
+        public IActionResult SearchSubscribedUsers(string Name = "", string Email = "", int page = 1)
+
+        {
+            IPagedList<User> SubscribedUsers;
+            ViewBag.type = 1;
+            ViewBag.index = ItemPerPage * (page - 1) + 1;
+            ViewBag.Courses = _serviceWrapper.settingsService.GetAllCourse();
+            SubscribedUsers = _serviceWrapper.userService.SearchInSubscribedUsers(Name, Email, 1).ToPagedList(page, ItemPerPage);
+            return PartialView("_ListSubscribedUsers", SubscribedUsers);
+        }
+        [HttpPost]
+        public IActionResult SendNotification(int UserId,string NotificationText)
+        {
+      
+            try
+            {
+                _serviceWrapper.notificationService.AddNotification(
+                    new Notification() 
+                    {
+                        Body=NotificationText,
+                        Title="تنبيه من الادمن",
+                        DateCreated=DateTime.Now,
+                        ToUserId=UserId
+                    });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(-1);
+
+            }
+            return Json(1);
         }
     }
 }

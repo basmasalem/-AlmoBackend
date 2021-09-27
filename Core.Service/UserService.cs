@@ -9,7 +9,9 @@ namespace Core.Service
     public interface IUserService
     {
         public List<User> GetAllUsers();
+        public List<User> GetAllSubscribedUsers();
         public List<User> SearchInUsers(string Name,string Email, int TypeId);
+        public List<User> SearchInSubscribedUsers(string Name,string Email, int TypeId);
         public User GetUserData(int Id);
         public void DeleteUser(User Model);
         public void UpdateUser(User Model);
@@ -38,9 +40,12 @@ namespace Core.Service
 
         public List<User> GetAllUsers()
         {
-           return _userRepository.List().ToList();
+           return _userRepository.List().Where(u=>u.IsDeleted!=true).ToList();
         }
-
+        public List<User> GetAllSubscribedUsers()
+        {
+            return _userRepository.List().Where(u=>u.SubscribeRequests.Count()>0 && u.IsDeleted != true).ToList();
+        }
         public User GetUserData(int Id)
         {
             return _userRepository.Find(Id);
@@ -49,6 +54,10 @@ namespace Core.Service
         public List<User> SearchInUsers(string Name, string Email, int TypeId)
         {
             return _userRepository.List().Where(u=>((string.IsNullOrEmpty(Name)|| u.Name.Contains(Name))&&(string.IsNullOrEmpty(Email) || u.Email==Email))&& u.IsDeleted!=true && u.UserTypeId == TypeId).ToList();
+        }
+        public List<User> SearchInSubscribedUsers(string Name, string Email, int TypeId)
+        {
+            return _userRepository.List().Where(u => ((string.IsNullOrEmpty(Name) || u.Name.Contains(Name)) && (string.IsNullOrEmpty(Email) || u.Email == Email)) && u.IsDeleted != true && u.UserTypeId == TypeId && u.SubscribeRequests .Count()>0).ToList();
         }
 
         public void UpdateUser( User Model)

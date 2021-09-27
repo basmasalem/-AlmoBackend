@@ -1,20 +1,17 @@
 ﻿using Core.Api.Helpers;
 using Core.Model;
-using Core.Service;
-using Core.Service.Utilities;
 using Core.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Core.Api.Controllers
 {
@@ -22,13 +19,13 @@ namespace Core.Api.Controllers
     public class BaseController : ControllerBase
     {
 
-
+   
         private readonly AppSettings _appSettings;
         
         public BaseController(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-   
+        
 
         }
         public int CurrentUser
@@ -118,5 +115,8 @@ namespace Core.Api.Controllers
             return body;
 
         }
+
+
+        
     }
 }

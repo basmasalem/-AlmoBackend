@@ -27,7 +27,7 @@ namespace Core.Service
         private IUserService _userService;
         private IProblemService _problemsService;
         private INotificationService _notificationService;
-        public IRepositoryWrapper _RepositoryWrapper;
+        public  IRepositoryWrapper _RepositoryWrapper;
         public ServiceWrapper(IRepositoryWrapper RepositoryWrappe)
         {
             _RepositoryWrapper = RepositoryWrappe;
@@ -49,7 +49,7 @@ namespace Core.Service
             {
                 if (_settingsService == null)
                 {
-                    _settingsService = new SettingsService(_RepositoryWrapper.SettingsRepository);
+                    _settingsService = new SettingsService(_RepositoryWrapper.SettingsRepository,_RepositoryWrapper.CourseRepository);
                 }
                 return _settingsService;
             }
